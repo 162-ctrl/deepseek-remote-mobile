@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Phone Direct Link (M1)",
+    "description": "Turns DeepSeek Harness into a relay your phone app can pair with by QR code or pairing code — no Java backend, no tunnel."
+  }
+}

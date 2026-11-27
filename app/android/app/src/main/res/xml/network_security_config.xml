@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  M2.7：允许明文 HTTP。
+
+  手机端要直连局域网里的插件（http://192.168.x.x:8787），而 Android 9（API 28）起
+  默认禁止明文流量，不加这段时"测试连接"会直接报 CLEARTEXT communication not permitted。
+  插件本身只监听局域网/回环，公网走 https 的 Cloudflare 隧道，因此这里放开明文是可接受的；
+  如果要收紧，可把 base-config 换成只列具体域名的 domain-config。
+-->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="true" />
+</network-security-config>

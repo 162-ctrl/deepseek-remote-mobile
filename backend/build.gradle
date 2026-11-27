@@ -1,0 +1,49 @@
+// M1 relay backend - Spring Boot 3.5.x on Java 21 (Gradle 8.14.3)
+// The Boot Gradle plugin is resolved from Maven Central via buildscript so the
+// build does not depend on the Gradle Plugin Portal being reachable.
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.springframework.boot:spring-boot-gradle-plugin:3.5.16'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+
+group = 'com.deepseek'
+version = '0.1.1-m2'
+description = 'M1/M2 relay backend (App <-> Java relay <-> PC agent)'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.16')
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+    // M1.1 persistence: JdbcTemplate + HikariCP + Flyway migrations on PostgreSQL 16.
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-database-postgresql'
+    runtimeOnly 'org.postgresql:postgresql'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}

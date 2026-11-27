@@ -1,0 +1,208 @@
+﻿# DeepSeek Remote AI — 环境探测报告（check_env.ps1，只读）
+  ProbeTime:               2026-10-31 11:30:25 +08:00
+  Computer:                DESKTOP-XXXXXXX
+  User:                    DESKTOP-XXXXXXX\user
+  WorkingDir:              <项目根>
+
+## 1. System / Hardware
+  OS:                      Microsoft Windows 11 家庭版 中文版 / version 10.0.26300 build 26300 / 64 位
+  Machine:                 MECHREVO JIGUANG Series
+  CPU:                     Intel(R) Core(TM) i7-14650HX / 16 cores / 24 threads
+  RAM:                     31.72 GB
+  IsAdmin:                 False
+  PowerShell:              5.1.26100.9711
+  LastBoot:                2026/10/31 9:39:46
+  Disk C::                 300 GB total / 62.4 GB free
+  Disk D::                 652.9 GB total / 82.8 GB free
+  GPU:                     GameViewer Virtual Display Adapter / driver 15.6.5.199
+  GPU:                     Intel(R) UHD Graphics / driver 32.0.101.6733
+  GPU:                     NVIDIA GeForce RTX 5060 Laptop GPU / driver 32.0.16.2101
+
+## 2. Environment variables
+  JAVA_HOME:               (unset)
+  ANDROID_HOME:            (unset)
+  ANDROID_SDK_ROOT:        (unset)
+  FLUTTER_ROOT:            (unset)
+  GRADLE_HOME:             (unset)
+  MAVEN_HOME:              (unset)
+  M2_HOME:                 (unset)
+  PNPM_HOME:               (unset)
+  HTTP_PROXY:              (unset)
+  HTTPS_PROXY:             (unset)
+  ALL_PROXY:               (unset)
+  PUB_HOSTED_URL:          (unset)
+  FLUTTER_STORAGE_BASE_URL: (unset)
+  PATH entries:
+    D:\soft\bin\
+    C:\Windows\system32
+    C:\Windows
+    C:\Windows\System32\Wbem
+    C:\Windows\System32\WindowsPowerShell\v1.0\
+    C:\Windows\System32\OpenSSH\
+    C:\Program Files\dotnet\
+    C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common
+    D:\soft\pcsuite\
+    C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR
+    D:\
+    D:\soft\Git\cmd
+    C:\Users\user\AppData\Local\Programs\DeepSeek Harness\resources\runtime\cli\bin
+    C:\Users\user\.cargo\bin
+    C:\Users\user\AppData\Local\Programs\Python\Python314\Scripts\
+    C:\Users\user\AppData\Local\Programs\Python\Python314\
+    C:\Users\user\AppData\Local\Programs\Python\Launcher\
+    C:\Users\user\AppData\Local\Microsoft\WindowsApps
+    C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin
+    C:\Users\user\AppData\Roaming\npm
+    C:\Users\user\AppData\Local\Programs\Microsoft VS Code\bin\copilot-shim
+
+## 3. Java / JDK
+  JDK root:                C:\Users\user\dsh-tools\jdk\jdk-21.0.12.1+1
+  java:                    openjdk version "21.0.12.1" 2026-08-18 LTS
+                          OpenJDK Runtime Environment Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS)
+                          OpenJDK 64-Bit Server VM Temurin-21.0.12.1+1 (build 21.0.12.1+1-LTS, mixed mode, sharing)
+  javac:                   javac 21.0.12.1
+  mvn:                     MISSING (not in PATH)
+
+## 4. Android SDK / Emulator
+  Android SDK root:        C:\Users\user\dsh-tools\android-sdk
+  adb:                     Android Debug Bridge version 1.0.41
+  emulator version:        Android emulator version 37.2.12.0 (build_id 16428233) (CL:N/A)
+  emulator accel:          accel:
+                          0
+                          WHPX(10.0.26300) is installed and usable.
+                          accel
+  AVDs:                    timebook_test
+  Installed packages (sdkmanager --list_installed):
+    Loading package information...
+    Loading local repository...
+    [=========                              ] 25% Loading local repository...
+    [=========                              ] 25% Fetch remote repository...
+    [=======================================] 100% Fetch remote repository...
+    Installed packages:
+    Path                                        | Version | Description                                | Location
+    -------                                     | ------- | -------                                    | -------
+    build-tools;35.0.0                          | 35.0.0  | Android SDK Build-Tools 35                 | build-tools\35.0.0
+    build-tools;36.0.0                          | 36.0.0  | Android SDK Build-Tools 36                 | build-tools\36.0.0
+    emulator                                    | 37.2.12 | Android Emulator                           | emulator
+    platform-tools                              | 37.0.1  | Android SDK Platform-Tools                 | platform-tools
+    platforms;android-36                        | 2       | Android SDK Platform 36                    | platforms\android-36
+    system-images;android-34;google_apis;x86_64 | 14      | Google APIs Intel x86_64 Atom System Image | system-images\android-34\google_apis\x86_64
+  flutter:                 MISSING (not in PATH)
+
+## 5. Other dev toolchains
+  node:                    v24.18.1
+  npm:                     11.16.0
+  npx:                     11.16.0
+  corepack:                0.35.0
+  pnpm:                    MISSING (not in PATH)
+  git:                     git version 2.56.0.windows.2
+  python:                  Python 3.14.3
+  pip:                     pip 25.3 from C:\Users\user\AppData\Local\Programs\Python\Python314\Lib\site-packages\pip (python 3.14)
+  cargo:                   cargo 1.99.0 (5f94df478 2026-08-27)
+  rustc:                   rustc 1.99.0 (b940084d7 2026-09-28)
+  dotnet runtimes:         Microsoft.NETCore.App 8.0.14 [C:\Program Files\dotnet\shared\Microsoft.NETCore.App]
+  dotnet SDKs:
+    (none)
+  winget:                  v1.29.380
+  cloudflared:             cloudflared version 2026.10.3 (built 2026-10-21T03:51 UTC)
+
+## 6. Gradle
+  gradle:                  Gradle 8.14.3
+                          Build time:    2025-07-04 13:15:44 UTC
+                          Revision:      e5ee1df3d88b8ca3a8074787a94f373e3090e1db
+                          Kotlin:        2.0.21
+                          Groovy:        3.0.24
+                          Ant:           Apache Ant(TM) version 1.10.15 compiled on August 25 2024
+                          Launcher JVM:  21.0.12.1 (Eclipse Adoptium 21.0.12.1+1-LTS)
+                          Daemon JVM:    C:\Users\user\dsh-tools\jdk\jdk-21.0.12.1+1 (no JDK specified, using current Java home)
+
+## 7. Windows build / packaging chain
+  VS BuildTools:           C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools
+  MSBuild:                 17.14.60.43110
+  MSVC cl.exe:             C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\Hostx64\x64\cl.exe
+  Windows SDK:             root C:\Program Files (x86)\Windows Kits\10 / newest Include 10.0.26100.0
+  signtool:                C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\arm64\signtool.exe
+  NSIS makensis:           v3.11
+  cmake:                   MISSING (not in PATH)
+  7-Zip:                   7-Zip (a) 23.01 (x64) : Copyright (c) 1999-2023 Igor Pavlov : 2023-06-20
+                          Formats:
+                          C...F..........c.a.m+..  7z       7z            7 z BC AF ' 1C
+
+## 8. FFmpeg (remote desktop / screen capture)
+  ffmpeg path:             D:\soft\MiniMax Design\current\resources\ffmpeg\ffmpeg.exe
+  ffmpeg version:          ffmpeg version 6.1.1-essentials_build-www.gyan.dev Copyright (c) 2000-2023 the FFmpeg developers
+  gdigrab device:          True
+  libx264 encoder:         True
+  h264_nvenc encoder:      True
+  mjpeg encoder:           True
+
+## 9. Database / Middleware
+  psql:                    MISSING (not in PATH)
+  mysql:                   MISSING (not in PATH)
+  redis-server:            MISSING (not in PATH)
+  docker:                  MISSING (not in PATH)
+  wsl --status: 输出为 UTF-16，管道读取会乱码；以 Win32_OptionalFeature 的 InstallState 为准（见下）
+  Feature Microsoft-Windows-Subsystem-Linux: InstallState=2
+  Feature VirtualMachinePlatform: InstallState=1
+
+## 10. DeepSeek Harness (DSH)
+  DSH exe:                 C:\Users\user\AppData\Local\Programs\DeepSeek Harness\DeepSeek Harness.exe
+  FileVersion:             0.2.1-rc.5
+  ProductVersion:          0.2.1.0
+  CompanyName:             GitHub, Inc.
+  dsh CLI:                 0.2.1-rc.5
+  DSH processes:           11
+
+## 11. Port usage (listen)
+  port 62492:              LISTEN 127.0.0.1:62492 <- pid 22960 (DeepSeek Harness)
+  port 8326:               LISTEN 127.0.0.1:8326 <- pid 22960 (DeepSeek Harness)
+  port 8080:               FREE
+  port 8081:               FREE
+  port 8443:               FREE
+  port 5432:               FREE
+  port 6379:               FREE
+  port 3306:               FREE
+  port 27017:              FREE
+  port 3000:               FREE
+  port 5173:               FREE
+  port 9229:               FREE
+  port 8765:               FREE
+  port 18787:              LISTEN 127.0.0.1:18787 <- pid 8208 (node)
+  port 7897:               LISTEN :::7897 <- pid 23144 (com.vortex.helper)
+  port 53:                 LISTEN :::53 <- pid 23144 (com.vortex.helper)
+
+## 12. RDP / code-signing certificate
+  TermService:             Stopped / Manual
+  fDenyTSConnections:      1
+  CodeSigning cert (CurrentUser): 0 found
+
+## 13. Network / proxy
+  winhttp proxy: Current WinHTTP proxy settings: |     Direct access (no proxy server).
+  git config proxy:        (no output)
+  npm proxy:               null
+  npm https-proxy:         null
+  npm registry:            https://registry.npmmirror.com
+  pip index-url:           https://pypi.tuna.tsinghua.edu.cn/simple
+  TCP 443 reachability:
+    repo.maven.apache.org            OK
+    services.gradle.org              OK
+    dl.google.com                    OK
+    storage.googleapis.com           OK
+    pub.dev                          OK
+    registry.npmjs.org               OK
+    registry.npmmirror.com           OK
+    github.com                       OK
+    start.spring.io                  OK
+    marketplace.visualstudio.com     OK
+
+## 14. Key gaps (auto-detected)
+  - Flutter SDK: MISSING
+  - PostgreSQL: no psql client
+  - Redis: no redis-server
+  - Docker: MISSING
+  - WSL feature InstallState=2
+  - Code-signing cert: NONE
+  - CMake: MISSING
+  - Maven: MISSING (use Gradle or mvnw)
+
+# End of report (read-only probe; nothing was installed or persisted)

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "手机端直连 (M1)",
+    "description": "把 DeepSeek Harness 变成手机端可扫码直连的中继：自带配对页、二维码与 M1 WebSocket 服务，免 Java 后端与隧道。"
+  }
+}

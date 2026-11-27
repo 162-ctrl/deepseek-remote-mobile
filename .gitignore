@@ -1,0 +1,34 @@
+﻿# 依赖与构建产物
+node_modules/
+.dart_tool/
+build/
+.gradle/
+*.iml
+.idea/
+
+# 本地配置与密钥（绝不入库）
+key.properties
+*.jks
+*.keystore
+local.properties
+
+# 运行期数据
+*.log
+*.log.json
+received/
+uploads/
+evidence/
+probe-*.json
+
+# 系统垃圾
+.DS_Store
+Thumbs.db
+
+# APK 只保留 apk/ 下的发布包
+*.apk
+!apk/*.apk
+.flutter-plugins
+.flutter-plugins-dependencies
+*.bin
+*.class
+*.jar

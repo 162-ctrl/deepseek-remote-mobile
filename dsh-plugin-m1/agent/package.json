@@ -1,0 +1,31 @@
+{
+  "name": "deepseek-remote-agent",
+  "version": "0.1.0-m1",
+  "private": true,
+  "type": "module",
+  "description": "DeepSeek Remote Agent —— 电脑端代理。M0：DeepSeek Harness ACP 适配内核（JSON-RPC over stdio）；M1：WSS relay（配对、心跳、重连、审批/取消编排）。",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "test": "node --test tests/unit/jsonrpc.test.ts tests/unit/mapper.test.ts tests/unit/launcher.test.ts tests/unit/errors.test.ts",
+    "test:contract": "node --test tests/contract/acp-contract.test.ts",
+    "test:all": "npm run test && npm run test:contract && npm run e2e",
+    "probe": "node scripts/probe.ts",
+    "probe:approval": "node scripts/probe-approval.ts",
+    "probe:cancel": "node scripts/probe-cancel.ts",
+    "probe:trigger": "node scripts/probe-reject-trigger.ts",
+    "e2e": "node scripts/e2e-smoke.ts",
+    "serve": "node scripts/serve.ts",
+    "fake:relay": "node tools/fake-relay-server.ts",
+    "selftest:relay": "node tools/relay-selftest.ts",
+    "selftest:relay:full": "node tools/relay-selftest.ts --acp-full",
+    "acl:check": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/ensure-workspace-acl.ps1 -Verify",
+    "acl:fix": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/ensure-workspace-acl.ps1 -Apply",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}

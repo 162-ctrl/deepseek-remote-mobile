@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- M2.2 A4：分享卡缓存目录（真实暴露逻辑见 ShareFileProvider，零 androidx 依赖）。 -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <cache-path name="share" path="share/" />
+    <!-- M2.5：APK 下载缓存（安装器通过 content:// 读取）。 -->
+    <cache-path name="updates" path="updates/" />
+    <!-- M4.9：工作区文件预览缓存（「用其他应用打开」交给 WPS / 系统阅读器）。 -->
+    <cache-path name="preview" path="preview/" />
+</paths>

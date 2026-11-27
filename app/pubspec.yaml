@@ -1,0 +1,30 @@
+name: deepseek_remote_app
+description: DeepSeek Remote AI 手机端（M3.6 插件市场与桌面会话 v0.3.6）—— 远程连接电脑上的 DeepSeek Harness。
+publish_to: 'none'
+version: 0.4.67+88
+
+environment:
+  sdk: '>=3.5.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  file_picker: ^10.3.3
+  image_picker: ^1.2.0
+  # M4.9：工作区里预览 PDF / Office / 图片以外的文件时，用系统应用打开。
+  # 传 content://（FileProvider）+ MIME，不暴露 file:// URI。
+  open_filex: ^4.7.0
+  mobile_scanner: ^7.5.0
+  path_provider: ^2.1.6
+  flutter_secure_storage: ^9.2.2
+  webview_flutter: ^4.14.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/update_notes.md

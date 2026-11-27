@@ -1,0 +1,16 @@
+# 依赖与产物（Node 24 原生跑 TS，无需构建；devDeps 仅类型检查用）
+node_modules/
+
+# 运行期临时/敏感产物：工作区、证据、探针输出
+.workspaces/
+evidence/
+.tmp/
+*.out.txt
+*.err.txt
+.trigger_*.txt
+.tmp_test8.txt
+
+# 本地环境
+.env
+.env.*
+!.env.example

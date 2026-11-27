@@ -1,0 +1,41 @@
+{
+  "name": "dsh-plugin-m1",
+  "version": "0.2.69",
+  "private": true,
+  "description": "把 DeepSeek Harness 变成手机端（DeepSeek Remote AI）可直接扫码连接的中继服务：装一个插件，手机扫码即连。",
+  "license": "MIT",
+  "type": "module",
+  "main": "./lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./assets/icon.svg",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib",
+    "client.js",
+    "agent",
+    "assets",
+    "locale",
+    "cordis.patch.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1",
+    "pdf-parse": "^1.1.1"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  }
+}

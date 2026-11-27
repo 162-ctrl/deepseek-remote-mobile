@@ -1,0 +1,5 @@
+# dsh-plugin-m1 bundle patch
+# 单包单插件：装上即拥有 M1 中继服务（手机端直连，无需 Java 后端 / 隧道）
+- insert:
+    - id: dsh-plugin-m1
+      name: dsh-plugin-m1
