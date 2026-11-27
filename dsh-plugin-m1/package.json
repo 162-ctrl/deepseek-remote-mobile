@@ -1,6 +1,6 @@
 {
   "name": "dsh-plugin-m1",
-  "version": "0.2.69",
+  "version": "0.2.70",
   "private": true,
   "description": "把 DeepSeek Harness 变成手机端（DeepSeek Remote AI）可直接扫码连接的中继服务：装一个插件，手机扫码即连。",
   "license": "MIT",

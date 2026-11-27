@@ -17,7 +17,20 @@ const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
 const WINDOW_MS = 60_000;
 const MAX_FAILURES = 5;
 
-/** 本机所有可用于手机连接的 IPv4（排除回环与虚拟网卡）。 */
+/**
+ * 判断一个 IPv4 属于哪类网络。
+ *
+ * - `tailscale`：`100.64.0.0/10`（Tailscale 给的固定地址，跨网络也能用）；
+ * - `virtual`：VMware / VirtualBox / Hyper-V / WSL 这类网卡，手机连不上；
+ * - `lan`：普通局域网。
+ */
+export function classifyAddress(address, name = '') {
+  if (/^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(address)) return 'tailscale';
+  if (/vmware|virtualbox|vethernet|wsl|loopback/i.test(String(name))) return 'virtual';
+  return 'lan';
+}
+
+/** 本机所有可用于手机连接的 IPv4（排除回环与链路本地）。 */
 export function lanAddresses() {
   const list = [];
   const interfaces = networkInterfaces();
@@ -25,11 +38,12 @@ export function lanAddresses() {
     for (const entry of entries ?? []) {
       if (entry.family !== 'IPv4' || entry.internal) continue;
       if (/^169\.254\./.test(entry.address)) continue;
-      list.push({ name, address: entry.address, virtual: /vmware|virtualbox|vethernet|wsl|loopback/i.test(name) });
+      const kind = classifyAddress(entry.address, name);
+      list.push({ name, address: entry.address, kind, virtual: kind === 'virtual' });
     }
   }
-  // 优先级：Tailscale（100.64.0.0/10，跨网络固定地址）→ 普通局域网 → 虚拟网卡
-  const rank = (item) => (/^100\.(6[4-9]|[7-9]\d|1[01]\d|12[0-7])\./.test(item.address) ? 0 : item.virtual ? 2 : 1);
+  // 优先级：Tailscale（跨网络固定地址）→ 普通局域网 → 虚拟网卡
+  const rank = (item) => (item.kind === 'tailscale' ? 0 : item.kind === 'virtual' ? 2 : 1);
   list.sort((a, b) => rank(a) - rank(b));
   return list;
 }
@@ -132,12 +146,17 @@ export function createRelayHttpServer({ hub, version, log = () => {}, qrcodeAsse
 
   const pairInfo = () => {
     const port = pageContext.port;
-    const lanUrls = lanAddresses().map((item) => `http://${item.address}:${port}`);
+    const addresses = lanAddresses();
+    const toUrl = (item) => `http://${item.address}:${port}`;
+    const lanUrls = addresses.map(toUrl);
+    const tailscaleUrls = addresses.filter((item) => item.kind === 'tailscale').map(toUrl);
     const publicUrl = publicStatus().url ?? null;
     return {
       pairingCode: hub.pairingCode,
       urls: lanUrls,
       lanUrls,
+      // M4.74：Tailscale 给的 100.64/10 地址单独列出来——跨网络时它比公网隧道更快，也不依赖 cloudflared。
+      tailscaleUrls,
       publicUrl,
       publicUrls: publicUrl ? [publicUrl] : [],
       tunnel: publicStatus(),
@@ -398,7 +417,7 @@ export function createRelayHttpServer({ hub, version, log = () => {}, qrcodeAsse
 
     if (request.method === 'POST' && path === '/api/v1/desktop/workspaces') {
       // M4：手机端新建工作区。M4.13 起可带 `parentDir`，指定建在哪个父目录下
-      // （手机端固定用「项目根」，如 D:\Projects\项目）。
+      // （手机端固定用「项目根」，如 <项目根>）。
       const authHeader = request.headers.authorization ?? '';
       const token = authHeader.startsWith('Bearer ')
         ? authHeader.slice(7)
@@ -1291,6 +1310,8 @@ export function renderPairPage({ hub, version, port, tunnel }) {
   const addresses = lanAddresses();
   const primary = addresses.find((item) => !item.virtual) ?? addresses[0];
   const primaryUrl = primary ? `http://${primary.address}:${port}` : `http://127.0.0.1:${port}`;
+  const tailscale = addresses.find((item) => item.kind === 'tailscale');
+  const tailscaleUrl = tailscale ? `http://${tailscale.address}:${port}` : null;
   const otherUrls = addresses
     .map((item) => `http://${item.address}:${port}`)
     .filter((url) => url !== primaryUrl);
@@ -1341,13 +1362,13 @@ export function renderPairPage({ hub, version, port, tunnel }) {
 <body>
   <div class="card">
     <h1>DeepSeek 手机端直连</h1>
-    <div class="sub">家里/办公室同一个 Wi-Fi 用左边局域网码；人在外面用右边公网码。App 里扫码会自动填好地址和匹配码，也可以手输。</div>
+    <div class="sub">三张码任选：同一 Wi-Fi 用左边的局域网码；装过 Tailscale（手机和电脑在同一个 Tailnet）就用下面那条 100.x 地址；人在外面、没有 Tailscale 才用右边公网码。App 里扫码会自动填好地址和匹配码，也可以手输。</div>
     <div class="grid">
       <section class="tile">
-        <div class="tag"><span class="dot" style="background:#22c55e"></span>局域网（同一 Wi-Fi）</div>
+        <div class="tag"><span class="dot" style="background:#22c55e"></span>局域网 / Tailscale（同一网络）</div>
         <div class="qr" id="qr-lan"></div>
         <div class="addr" id="lan-addr">${escapeHtml(primaryUrl)}</div>
-        <div class="hint">不走公网，速度最快</div>
+        <div class="hint">${tailscaleUrl ? '当前优先用 Tailscale 地址，跨网络也能连' : '不走公网，速度最快'}</div>
       </section>
       <section class="tile">
         <div class="tag"><span class="dot" id="wan-dot" style="background:${publicDot}"></span>公网（任何网络）</div>
@@ -1372,8 +1393,9 @@ export function renderPairPage({ hub, version, port, tunnel }) {
       <li>或者手输：地址填二维码下面那行，匹配码填 ${escapeHtml(code)}</li>
       <li>连上后即可对话、看执行过程、批准工具调用</li>
     </ol>
+    ${tailscaleUrl ? `<div class="row"><div><div class="label">Tailscale（同一 Tailnet，跨网络可用）</div><div class="addr" id="tailscale-addr">${escapeHtml(tailscaleUrl)}</div></div><div class="hint">比公网隧道快，也不依赖 cloudflared</div></div>` : ''}
     <div class="urls">${[primaryUrl, ...otherUrls].map((url) => escapeHtml(url)).join('<br/>')}</div>
-    <div class="foot"><span>二维码 = 地址 + 匹配码（#c=）</span><span>局域网直连 · 公网走 Cloudflare 隧道</span></div>
+    <div class="foot"><span>二维码 = 地址 + 匹配码（#c=）</span><span>局域网 · Tailscale · 公网隧道，任选其一</span></div>
   </div>
   <script src="/assets/qrcode.js"></script>
   <script>

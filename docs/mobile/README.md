@@ -380,7 +380,7 @@ cd backend; C:\Users\user\dsh-tools\gradle\gradle-8.14.3\bin\gradle.bat bootRun 
 
 
 
-# 2) 公网隧道（记下 https://<公网隧道>.trycloudflare.com）
+# 2) 公网隧道（记下 https://xxx.trycloudflare.com）
 
 tools\bin\cloudflared.exe tunnel --url http://127.0.0.1:8080 --no-autoupdate
 
@@ -400,7 +400,7 @@ cd agent; node scripts/serve.ts
 
 
 
-手机上：AI 助手页右上角「⇄」→ 服务器地址填 `https://<公网隧道>.trycloudflare.com`、配对码 `824613` → 「测试连接」（应显示后端版本 + 电脑 Agent 在线）→ 「连接」→ 顶部出现「已连接真实电脑」→ 直接发指令。
+手机上：AI 助手页右上角「⇄」→ 服务器地址填 `https://xxx.trycloudflare.com`、配对码 `824613` → 「测试连接」（应显示后端版本 + 电脑 Agent 在线）→ 「连接」→ 顶部出现「已连接真实电脑」→ 直接发指令。
 
 
 
@@ -686,7 +686,7 @@ ode --test 15/15。
 > **M4.11 已知限制**：「暂无会话」卡片只反映当前电脑列表（电脑上真删目录后要等注册表 5 秒缓存 + 手机端 5 秒轮询才消失）；存档仍只能看不能继续发指令；需要插件 0.2.19+ 才没有测试临时目录；仍未真机复测（`adb devices` 无设备）。
 
 > **M4.12 对话正文按 Markdown 排版**（2026-11-16）：用户发来 DeepSeek 官方 App 的对话截图问「你的对话不能做成这样的吗」。差别不在链路而在**正文渲染**——助手回复以前只认 `**加粗**` 和 `` `代码` ``，`###` 标题、`- ` 列表、三反引号代码块、`|` 表格全原样露字。新增零依赖的 `app/lib/widgets/markdown_text.dart`：`MarkdownParser.parse()` 出 `MdBlock`（`heading/paragraph/bullet/ordered/quote/code/table/rule`），`buildInlineSpans()` 处理行内加粗 / 代码 / 删除线 / 链接 / 斜体，`MarkdownText` 负责块间距与缩进；代码块有 34 高的顶栏（语言标签，空语言显示 `text`，右侧「复制」把原始代码写剪贴板），表格是 `Table` + 表头底色 + 0.8 分隔线。`chat_items.dart` 的 `_AssistantText` 改用 `MarkdownText`，底部常驻「复制 + 时间」（`_AnswerActions`）；`cloud_chat_screen.dart` 的 `_Bubble` 去掉 320 宽上限与边框卡片，助手消息无气泡直接排版、用户消息保留右侧气泡；`app_theme.dart` 补 `Noto Sans CJK SC` / `Source Han Sans SC` 回退字体。中文标题用 `FontWeight.w600` 而不是 `w700`（CJK 没真粗体，w700 是伪加粗、小字号下发糊）。App 0.4.12+39、`flutter test` **344/344**（+17）。同批插件 0.2.20：`resolveUploadDir` 先按名字命中工作区列表（`knownWorkspacePaths()` + `findWorkspaceByName()`），修「附件悄悄落回 `%USERPROFILE%\.dsh\dsh-plugin-m1\uploads`」，`node --test` 31/31。
-> **M4.13 工作区按项目分组**（2026-11-16）：用户发来手机「工作区」页截图说「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」。原来是**平铺的会话卡**（任务卡 + 空目录卡 + 底部「以前跑过…」存档组），同目录的多个会话各占一张，项目一多就看不出归属。现在每个目录一张 `_ProjectGroupCard`：头部整行点折叠/展开（`_collapsed` 记路径），会话与存档都挂在所属项目下，空目录标「空项目」胶囊；分组逻辑抽成零依赖纯函数 `app/lib/services/project_groups.dart`（`ProjectGroup` / `projectNameOf` / `parentPathOf` / `groupWorkspacesByProject`），`_WorkspaceCard` 删除。胶囊与对话框文案改成「新建项目」，`parentDir` 固定成 `D:\Projects\项目`（授权根里没有它时退回第一个授权根并提示「电脑端没授权 …」）。插件 0.2.20 配套：`resolveParentDir()`（授权根本身/子目录，或目录真实存在）、`projectParentPath()`、`createDesktopWorkspace(name, parentDir)`，`listDesktopWorkspaces()` 每行带 `parent` 与 `isProject`。App 0.4.13+40、`flutter test` **353/353**（+9），插件 `node --test` 39/39（+8）。
+> **M4.13 工作区按项目分组**（2026-11-16）：用户发来手机「工作区」页截图说「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」。原来是**平铺的会话卡**（任务卡 + 空目录卡 + 底部「以前跑过…」存档组），同目录的多个会话各占一张，项目一多就看不出归属。现在每个目录一张 `_ProjectGroupCard`：头部整行点折叠/展开（`_collapsed` 记路径），会话与存档都挂在所属项目下，空目录标「空项目」胶囊；分组逻辑抽成零依赖纯函数 `app/lib/services/project_groups.dart`（`ProjectGroup` / `projectNameOf` / `parentPathOf` / `groupWorkspacesByProject`），`_WorkspaceCard` 删除。胶囊与对话框文案改成「新建项目」，`parentDir` 固定成 `<项目根>`（授权根里没有它时退回第一个授权根并提示「电脑端没授权 …」）。插件 0.2.20 配套：`resolveParentDir()`（授权根本身/子目录，或目录真实存在）、`projectParentPath()`、`createDesktopWorkspace(name, parentDir)`，`listDesktopWorkspaces()` 每行带 `parent` 与 `isProject`。App 0.4.13+40、`flutter test` **353/353**（+9），插件 `node --test` 39/39（+8）。
 
 > **M4.37 往上拽一下就开新对话**（2026-11-18）：手机档对话里把消息列表翻到顶端后继续往下拽超过 130 像素，顶部浮出「松手开始新对话」，松手就新建一条；中途松手回退则作废。判定只认到达顶端之后的越界量（`OverscrollNotification.overscroll < 0`），反向拖回或列表开始滚动都会作废；列表加了 `AlwaysScrollableScrollPhysics`，短对话里也能拽。App 0.4.37+63。
 > **M4.37 已知限制**：只有手机档（云端直连）有这个手势，电脑档是直播会话不适用；阈值写死 130 逻辑像素；拽的过程中没有跟手的位移动画，只有提示浮现；新建后原对话仍保留在「对话记录」里，但不会自动归档。
@@ -988,7 +988,7 @@ cd backend; C:\Users\user\dsh-tools\gradle\gradle-8.14.3\bin\gradle.bat bootRun 
 
 
 
-# 2) 公网隧道（记下 https://<公网隧道>.trycloudflare.com）
+# 2) 公网隧道（记下 https://xxx.trycloudflare.com）
 
 tools\bin\cloudflared.exe tunnel --url http://127.0.0.1:8080 --no-autoupdate
 
@@ -1008,7 +1008,7 @@ cd agent; node scripts/serve.ts
 
 
 
-手机上：AI 助手页右上角「⇄」→ 服务器地址填 `https://<公网隧道>.trycloudflare.com`、配对码 `824613` → 「测试连接」（应显示后端版本 + 电脑 Agent 在线）→ 「连接」→ 顶部出现「已连接真实电脑」→ 直接发指令。
+手机上：AI 助手页右上角「⇄」→ 服务器地址填 `https://xxx.trycloudflare.com`、配对码 `824613` → 「测试连接」（应显示后端版本 + 电脑 Agent 在线）→ 「连接」→ 顶部出现「已连接真实电脑」→ 直接发指令。
 
 
 
@@ -1294,7 +1294,7 @@ ode --test 15/15。
 > **M4.11 已知限制**：「暂无会话」卡片只反映当前电脑列表（电脑上真删目录后要等注册表 5 秒缓存 + 手机端 5 秒轮询才消失）；存档仍只能看不能继续发指令；需要插件 0.2.19+ 才没有测试临时目录；仍未真机复测（`adb devices` 无设备）。
 
 > **M4.12 对话正文按 Markdown 排版**（2026-11-16）：用户发来 DeepSeek 官方 App 的对话截图问「你的对话不能做成这样的吗」。差别不在链路而在**正文渲染**——助手回复以前只认 `**加粗**` 和 `` `代码` ``，`###` 标题、`- ` 列表、三反引号代码块、`|` 表格全原样露字。新增零依赖的 `app/lib/widgets/markdown_text.dart`：`MarkdownParser.parse()` 出 `MdBlock`（`heading/paragraph/bullet/ordered/quote/code/table/rule`），`buildInlineSpans()` 处理行内加粗 / 代码 / 删除线 / 链接 / 斜体，`MarkdownText` 负责块间距与缩进；代码块有 34 高的顶栏（语言标签，空语言显示 `text`，右侧「复制」把原始代码写剪贴板），表格是 `Table` + 表头底色 + 0.8 分隔线。`chat_items.dart` 的 `_AssistantText` 改用 `MarkdownText`，底部常驻「复制 + 时间」（`_AnswerActions`）；`cloud_chat_screen.dart` 的 `_Bubble` 去掉 320 宽上限与边框卡片，助手消息无气泡直接排版、用户消息保留右侧气泡；`app_theme.dart` 补 `Noto Sans CJK SC` / `Source Han Sans SC` 回退字体。中文标题用 `FontWeight.w600` 而不是 `w700`（CJK 没真粗体，w700 是伪加粗、小字号下发糊）。App 0.4.12+39、`flutter test` **344/344**（+17）。同批插件 0.2.20：`resolveUploadDir` 先按名字命中工作区列表（`knownWorkspacePaths()` + `findWorkspaceByName()`），修「附件悄悄落回 `%USERPROFILE%\.dsh\dsh-plugin-m1\uploads`」，`node --test` 31/31。
-> **M4.13 工作区按项目分组**（2026-11-16）：用户发来手机「工作区」页截图说「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」。原来是**平铺的会话卡**（任务卡 + 空目录卡 + 底部「以前跑过…」存档组），同目录的多个会话各占一张，项目一多就看不出归属。现在每个目录一张 `_ProjectGroupCard`：头部整行点折叠/展开（`_collapsed` 记路径），会话与存档都挂在所属项目下，空目录标「空项目」胶囊；分组逻辑抽成零依赖纯函数 `app/lib/services/project_groups.dart`（`ProjectGroup` / `projectNameOf` / `parentPathOf` / `groupWorkspacesByProject`），`_WorkspaceCard` 删除。胶囊与对话框文案改成「新建项目」，`parentDir` 固定成 `D:\Projects\项目`（授权根里没有它时退回第一个授权根并提示「电脑端没授权 …」）。插件 0.2.20 配套：`resolveParentDir()`（授权根本身/子目录，或目录真实存在）、`projectParentPath()`、`createDesktopWorkspace(name, parentDir)`，`listDesktopWorkspaces()` 每行带 `parent` 与 `isProject`。App 0.4.13+40、`flutter test` **353/353**（+9），插件 `node --test` 39/39（+8）。
+> **M4.13 工作区按项目分组**（2026-11-16）：用户发来手机「工作区」页截图说「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」。原来是**平铺的会话卡**（任务卡 + 空目录卡 + 底部「以前跑过…」存档组），同目录的多个会话各占一张，项目一多就看不出归属。现在每个目录一张 `_ProjectGroupCard`：头部整行点折叠/展开（`_collapsed` 记路径），会话与存档都挂在所属项目下，空目录标「空项目」胶囊；分组逻辑抽成零依赖纯函数 `app/lib/services/project_groups.dart`（`ProjectGroup` / `projectNameOf` / `parentPathOf` / `groupWorkspacesByProject`），`_WorkspaceCard` 删除。胶囊与对话框文案改成「新建项目」，`parentDir` 固定成 `<项目根>`（授权根里没有它时退回第一个授权根并提示「电脑端没授权 …」）。插件 0.2.20 配套：`resolveParentDir()`（授权根本身/子目录，或目录真实存在）、`projectParentPath()`、`createDesktopWorkspace(name, parentDir)`，`listDesktopWorkspaces()` 每行带 `parent` 与 `isProject`。App 0.4.13+40、`flutter test` **353/353**（+9），插件 `node --test` 39/39（+8）。
 
 ）与 `AccountBalance` 模型、`live_store.fetchAccountBalance()`，以及「我的」页的「账户余额」分区与 `_BalanceCard`：连接后自动读取、监听连接变化、右上角金额 +「重新读取」，有赠送钱包时单独一行；未连接 / 未登录 / 查询失败 / 插件太旧各有副标题。插件 `node --test` **95/95**（新增 6 + 4 例）、`flutter test` **386/386**（新增 4 例）。
 
@@ -1329,7 +1329,7 @@ ode --test 15/15。
 - 真机还没跑过一次真实提问：`ask_user_question` 要由电脑上的那一轮触发，无法在不挂住自己的前提下触发；线上验证的是字段与接口边界（`questions` 空数组、未知 id → 404、无 token → 401），卡片渲染由 widget 测试覆盖。
 - 卡片不翻页：电脑端右上角是「1/2」，手机上一屏把几页顺着列出来。
 - 仍是「看着才接管」：页面关掉、10 分钟窗口过后，提问就回到电脑弹窗，没有推送通知。
-- 隧道域名每次重启都变（本次 `https://<公网隧道>.trycloudflare.com`），装完包要重新扫码配对。
+- 隧道域名每次重启都变（本次 `https://ide-rpm-filename-henderson.trycloudflare.com`），装完包要重新扫码配对。
 
 > **M4.22 输入框里打出来的字不见了**
 
@@ -1346,7 +1346,7 @@ ode --test 15/15。
 - 只能守住「样式有颜色」，最终观感仍需真机确认（本次无 adb 设备）。
 - 项目里别处若也用 `copyWith(textTheme: ...)` 或随手 `TextStyle()` 不给颜色，同样会出这类问题；暂未加全文 lint。
 - 用户排队里还剩两条没做：**审核（授权）操作手机上仍然不出现**、**存档会话不要新开一条、要在同一条对话里继续**。
-- 隧道域名每次重启都变（本次 `https://<公网隧道>.trycloudflare.com`），装完包要重新扫码配对。
+- 隧道域名每次重启都变（本次 `https://engagement-saints-burke-cape.trycloudflare.com`），装完包要重新扫码配对。
 > **M4.21 手机端也有「N 条排队消息」**（2026-11-17）：用户发电脑端截图说「这个功能手机上也得有」。电脑端在一轮还在跑的时候，会把后面排着的话列成「4 条排队消息」——每条能改字、能删、能插话（那个上箭头就是插话，`Cmd/Ctrl+Enter` 是全部插话）。手机端以前完全没有这个概念：排队的话只能等它自己轮到。现在直播页底部浮出同一条面板：折叠时写「4 条排队消息」，展开逐条列出、能改字（弹框）、能删、能单条插话，也能一键「全部插话」。数据全在 Host 上：插件 0.2.26 新增 `GET|POST /api/v1/desktop/sessions/<id>/queue`，往里调 `sessionController.state()`（第二个参数 `signal` 必填，漏了会 `throwIfAborted`）与 `updateQueue()`（`QueueAction` 只有 `edit` / `remove` / `steer`，**没有 moveUp**）。队列里带附件的消息会显示成「（另有 1 个附件）」，不会是空白。插件 `node --test` **76/76**，`flutter test` **377/377**。
 >
 > **M4.21 已知限制**：队列只在直播页读，手机端不存本地队列，改动都即时打到 Host（断网直接报错）；两端同时改同一条没有版本号，后到的覆盖先到的；面板靠 1.5 秒轮询刷新，展开时队列变短会直接少行；**真机未复测**（无 adb 设备）。用户排在这里的另外三条诉求这轮没做：搜索框输入时没有提示、审核（授权）操作手机上仍然不出现、存档会话不要新开一条而要在同一条对话里继续。
@@ -1362,11 +1362,11 @@ ode --test 15/15。
 
 > **M4.18 已知限制**：目录里的中文标题依赖 Host 在 `listBundles()` 里给 `meta`，这台电脑目前没给，所以卡片标题显示的是包名（`@deepseek-ai/dsh-experimental-auto-review` 这种）；`spec` 目前多是纯包名（Host 未返回 `installTarget` 精确版本），安装时由电脑端解析最新版本；「官方」标记直接沿用 Host 的 `official`，`dsh-base`/`dsh-web-app` 这类返回 `official:false` 的会显示成普通条目；目录只读，手机上仍不能「启用/停用单个插件」（那在「已安装」页）。仍未真机复测。
 
-> **M4.17 桌面直播排版对齐官方 App**（2026-11-17）：用户第三次贴官方 App 截图，配文「对话做成这样」。前两轮解决的是**能力**（M4.12 的 Markdown 排版）与**内容**（M4.16 的注入/推理过滤），页面骨架却还是自己的：助手回复外套一层 `lineSoft` 浅底卡片 + 左侧 3px accent 竖条 + 圆角 16，工具记录写「过程 · N 步（点开看）」，顶部是一张 `Panel` 卡片、副标题直接把 `D:\Projects\…` 绝对路径用 `monospace` 怼出来。现在：列表 `itemBuilder` 直接 `return _EventRow(event: event)`（`ChatItemView` 的 assistant 分支本来就是纯 `MarkdownText` + `_AnswerActions`，只是被外面那层容器裹成卡片）；工具条改 `'${_running ? '进行中' : '已完成'} · ${_toolCallCount} 次工具调用'`，图标 `Icons.autorenew_rounded` / `Icons.check_circle_outline_rounded` + 右侧 `Icons.expand_more_rounded`，圆角 12，仍点开半屏「过程」；`_LiveHeader` 改 radius 22 胶囊（`palette.card` 底 + `palette.line` 边框），副标题 `'本机 · $folder'`，`folder` 由新增顶层 `desktopFolderName(String cwd)` 取路径最后一段（取不到只写「本机」）；`liveEmptyHint` 里「点上面的『过程』」跟着改成「点上面那条看完整记录」。App 0.4.17+44、`flutter test` **366/366**（+5，`app/test/desktop_live_m4_17_test.dart`），release APK 72,655,418 字节（SHA256 `5403BC368E0238586D610358A44E949067682D62BDA606FE5A97137E3F6797AC`）。插件无须改动。
+> **M4.17 桌面直播排版对齐官方 App**（2026-11-17）：用户第三次贴官方 App 截图，配文「对话做成这样」。前两轮解决的是**能力**（M4.12 的 Markdown 排版）与**内容**（M4.16 的注入/推理过滤），页面骨架却还是自己的：助手回复外套一层 `lineSoft` 浅底卡片 + 左侧 3px accent 竖条 + 圆角 16，工具记录写「过程 · N 步（点开看）」，顶部是一张 `Panel` 卡片、副标题直接把 `D:\用户\…` 绝对路径用 `monospace` 怼出来。现在：列表 `itemBuilder` 直接 `return _EventRow(event: event)`（`ChatItemView` 的 assistant 分支本来就是纯 `MarkdownText` + `_AnswerActions`，只是被外面那层容器裹成卡片）；工具条改 `'${_running ? '进行中' : '已完成'} · ${_toolCallCount} 次工具调用'`，图标 `Icons.autorenew_rounded` / `Icons.check_circle_outline_rounded` + 右侧 `Icons.expand_more_rounded`，圆角 12，仍点开半屏「过程」；`_LiveHeader` 改 radius 22 胶囊（`palette.card` 底 + `palette.line` 边框），副标题 `'本机 · $folder'`，`folder` 由新增顶层 `desktopFolderName(String cwd)` 取路径最后一段（取不到只写「本机」）；`liveEmptyHint` 里「点上面的『过程』」跟着改成「点上面那条看完整记录」。App 0.4.17+44、`flutter test` **366/366**（+5，`app/test/desktop_live_m4_17_test.dart`），release APK 72,655,418 字节（SHA256 `5403BC368E0238586D610358A44E949067682D62BDA606FE5A97137E3F6797AC`）。插件无须改动。
 
 > **M4.16 手机看到的必须是对话，而且一进来就是最新**（2026-11-17）：用户截图反馈「每个对话里面的内容你不应该放到最新的吗，而且你这英文是什么，我要的是对话」——正文第一条是 Host 注入的 `Time sampled while preparing turn 3, step 24: …`，第二条是模型的英文推理 `Header empty. So where does blue come from?…`，真正的对话在更下面。三处同时坏：①`INJECTED_USER_PREFIXES` 缺 `'Time sampled while preparing'`，而且**存档写入路径 `archiveEvent` 根本没调用过滤**（只有直播路径 `mapDesktopEvent` 调）；②`assistantText()` 在没有正文 part 时 `const chosen = texts.length > 0 ? texts : others;` 回退到全部 part，纯 reasoning 消息整段被当成回复；③`_scrollToEnd(force: true)` 用 `jumpTo(position.maxScrollExtent)`，而 `ListView.builder` 首帧的 `maxScrollExtent` 只覆盖已构建的几屏，长列表跳不到真正底部。修法：插件新增 `lib/chat-filter.js`（11 条注入前缀、4 条特征串、只扫前 160 字符、`isInjectedUserText` / `chatText` / `isInjectedEvent`），`assistantText` 删掉 reasoning 回退、无正文返回空串，`archiveEvent` 写入时过滤、`mapDesktopEvent` 改用同一份规则、`getArchivedSession` 读取时再滤一遍，archive-one 补 `title/cwd/lastTime/messageCount`；另加 `ARCHIVE_EVENT_SCHEMA = 2` + `findSessionLogFile()` + `migrateLegacyArchiveEvents()`（含注入的老记录按磁盘日志重读，现场实测该会话 380 → 342 条事件、`Time sampled` 等全消失）。App 侧 `lib/services/chat_filter.dart` 同一份前缀表兜底，`_messages` 的 user 分支先过滤；列表改 `reverse: true` 让最新一条天然在底部，`_scrollToEnd` 改 `jumpTo(0)`/`animateTo(0)`；`_LiveFooter` 三态文案（往上翻时「往上是更早的对话 · 点这里回到最新」可点回）。App 0.4.16+43、`flutter test` **361/361**（+5），插件 0.2.22、`node --test` **51/51**（+5）。踩坑：不要用 `(Get-Content -Raw) -replace … | Set-Content` 改含中文的 UTF-8 文件——PS 5.1 按 GBK 解码会双编码乱码并吞掉行尾换行。
 
-> **M4.15 新建项目落点修对**（2026-11-17）：用户截图反馈「新项目要建立的位置不对」，提示写着「将建在: D:\Projects\课程\上册\计算方法实验」。截图里另有线索：标题还是「新建工作区」（M4.13 已改名「新建项目」），说明手机上装的是旧 APK；但**换新版也会错**——M4.13 用「授权根里有没有 `D:\Projects\项目` 这一项」判断落点，而电脑端返回的 9 个授权根全是具体项目（`…\项目\deepseek手机端` 等），`…\项目` 是它们的父目录、从不在列表里，于是每次都判成「没授权」退回第一个授权根。现改为无条件指名项目根（`String get _targetParent => kDefaultProjectParent`），提示统一成「将建在：D:\Projects\<名字>」；插件 0.2.21 的 `resolveParentDir()` 本来就允许「显式指定且目录真实存在」，现场带 `parentDir` 实测确实建在 `D:\Projects\<名字>`，插件一行未改。App 0.4.15+42，`flutter test` **356/356**，release APK 72,589,702 字节（SHA256 `3AA815BE6D58D4C1AC21C7FFAB8CA8E7A12DC475BE72DBC9B79142B64FD2B023`）。
+> **M4.15 新建项目落点修对**（2026-11-17）：用户截图反馈「新项目要建立的位置不对」，提示写着「将建在: <课程作业>\计算方法实验」。截图里另有线索：标题还是「新建工作区」（M4.13 已改名「新建项目」），说明手机上装的是旧 APK；但**换新版也会错**——M4.13 用「授权根里有没有 `<项目根>` 这一项」判断落点，而电脑端返回的 9 个授权根全是具体项目（`…\项目\deepseek手机端` 等），`…\项目` 是它们的父目录、从不在列表里，于是每次都判成「没授权」退回第一个授权根。现改为无条件指名项目根（`String get _targetParent => kDefaultProjectParent`），提示统一成「将建在：<项目根>\<名字>」；插件 0.2.21 的 `resolveParentDir()` 本来就允许「显式指定且目录真实存在」，现场带 `parentDir` 实测确实建在 `<项目根>\<名字>`，插件一行未改。App 0.4.15+42，`flutter test` **356/356**，release APK 72,589,702 字节（SHA256 `3AA815BE6D58D4C1AC21C7FFAB8CA8E7A12DC475BE72DBC9B79142B64FD2B023`）。
 
 > **M4.14 直播页不再空手**（2026-11-16）：两条反馈同源——手机在「看起来应该能看见」时什么都没看见，也没人告诉它为什么。①「每次点进去加载不出来对话」：插件 `listDesktopSessionEvents` 首屏只从日志尾部倒取 **80 条已映射事件**，忙会话这 80 条可能全是 `tool-call`/`tool-result`（实测 36+35），App 只留 user/assistant → 正文 0 条 → 显示空态；带 `afterSeq` 时旧代码**从头往后扫**并 `break`，积压就永远追不上。现在首屏从尾部倒扫到「够 12 条对话（`MIN_CHAT_EVENTS`）或 600 条（`MAX_TAIL_EVENTS`）」，增量也改为**从尾部倒扫**（拿到最新一段）。②「授权手机上没有出来也没有提醒」：`WATCH_WINDOW_MS` 2 分钟 → **10 分钟**（App 切后台/锁屏时轮询停，「不算在看」就一律交回桌面弹窗）、`APPROVAL_TIMEOUT_MS` 90 秒 → **2 分钟**，超时先 `log('接管授权超时，已退回电脑：…')` 再退回电脑（以前一声不响）。手机端 `desktop_session_screen.dart`：有 `_approvals` 时顶栏挂「待应答 N」红底胶囊，空态文案抽成 `liveEmptyHint({required bool hasEvents})` 区分「这个会话还没有可展示的内容」与「这一屏只有工具调用，点上面的「过程」看完整记录」。App 0.4.14+41、`flutter test` **356/356**（+3），插件 0.2.21、`node --test` **46/46**（+7）。
 
@@ -1485,7 +1485,7 @@ ode --test 15/15。
 26. M4.7 本机对话附件：图片按 base64 `image_url` 直发云端模型（不经电脑、不落盘），文本文件内联，二进制只发文件名；远程电脑档仍落到 `<工作区>/手机附件/`。
 27. M4.10 会话存档：存档只能看不能继续发指令；扫描只补存档里缺失的会话，日志事件上限 1500 条、正文每段 4000 字、最多 400 条会话；需要插件 0.2.14+（旧插件接口 404 时手机端不显示这一组）；`session-archive.json` 在 DSH 重开后由 30 秒定时器生成。
 28. 「工作区」页的「暂无会话」卡片只反映当前电脑列表：电脑上真删掉目录后，要等注册表 5 秒缓存 + 手机端 5 秒轮询才消失；存档仍然只能看不能继续发指令；需要插件 0.2.19+ 存档列表才不含测试临时目录。
-29. M4.49 插件热修（便携版 DSH）：电脑端 Agent 只找 PATH 的 `dsh.cmd` 与 `%LOCALAPPDATA%\Programs\DeepSeek Harness`，便携版装在 `<DSH 安装目录>` 时五条发现路径全落空，每 30 秒报「未找到 DeepSeek Harness 安装」，手机端于是看到空的「工作区」二级页。插件 0.2.34 起从 `process.execPath` 推出安装根并注入 `DSH_INSTALL_ROOT`，agent 侧再加一条「问父进程 exe」的兜底（不依赖插件重载）。**仍然没做**：Agent 掉线时二级页照旧显示「电脑端还没有配置工作区（M1_WORKSPACE_ROOT）」，没有说明是没连上（`liveStore.deviceOnline` 已有信号，`ProjectsScreen` 没用），下次改成掉线态 + 重试。
+29. M4.49 插件热修（便携版 DSH）：电脑端 Agent 只找 PATH 的 `dsh.cmd` 与 `%LOCALAPPDATA%\Programs\DeepSeek Harness`，便携版装在 `<DSH 安装目录>\new` 时五条发现路径全落空，每 30 秒报「未找到 DeepSeek Harness 安装」，手机端于是看到空的「工作区」二级页。插件 0.2.34 起从 `process.execPath` 推出安装根并注入 `DSH_INSTALL_ROOT`，agent 侧再加一条「问父进程 exe」的兜底（不依赖插件重载）。**仍然没做**：Agent 掉线时二级页照旧显示「电脑端还没有配置工作区（M1_WORKSPACE_ROOT）」，没有说明是没连上（`liveStore.deviceOnline` 已有信号，`ProjectsScreen` 没用），下次改成掉线态 + 重试。
 30. M4.50 工作区「新会话」：以前点「新会话」是让 Agent 子进程在磁盘上建一个空会话，而手机工作区列表和电脑端列表读的都是**电脑端主进程内存里的 `sessions`**（两条进程两套表），所以会话建出来了、两头都看不见。现在不再建空会话：按钮改成「去对话框发第一条消息」，绑好目录、切到 AI 助手的「远程电脑」档并聚焦输入框，用户发第一条消息时才真的建会话（那时才有对话可显示）；电脑还在忙时只记下目录并提示。**仍有限制**：电脑端「会话」列表还是看不到手机发起的会话（同一份磁盘会话被 Agent 进程持有），要改需要把会话登记进电脑端并解决并发写同一个日志文件的问题，方案待定。
 
 31. M4.51 工作区项目卡默认折叠：以前（M4.13）项目分组默认全展开，一个项目攒到二十几条会话后，首页只剩这一个项目的会话列表，想找「直播中」那条要先翻过一堆「已存档」。现在项目卡默认收起，只留项目名、目录、`N 个会话 · M 个进行中 · 最后活动…` 摘要；点项目头才摊开，再点收起，各项目独立（`_expanded` 按工作区路径记，只在页面内存里，不写设置、重启回默认）。折叠时项目头右侧有一个可旋转的小箭头作提示，空项目不画箭头。**注意**：折叠后筛「进行中 / 等待授权」，结果仍收在项目卡里，需要再点一下项目头；卡片摘要会写「N 个进行中」，不至于以为筛选没生效。
@@ -1497,7 +1497,7 @@ ode --test 15/15。
 34. M4.54 电脑和手机同时出现同一张提问卡：DSH 的 Web 客户端本来就支持多个客户端同挂一个 pending 提问（先答者生效、晚到的提交被 gateway 静默丢弃，卡片由会话的 `userQuestions` 投影决定去留），所以插件 0.2.36 接管提问时先把 `next()` 叫起来让电脑照常弹卡，手机这边也挂一张，两边赛跑：电脑先答 → 用电脑的答案并摘掉手机卡；手机先答 → 用手机的答案，电脑那张随投影关闭自己消失。手机卡 5 分钟没人答只收手机那张，电脑那张还能继续答；两边都没人答才按「跳过」放行。**注意**：两端没有优先级（谁先答用谁）；插件 0.2.36 已热载生效（`/api/v1/health` 回读 `version:"0.2.36"`）。
 
 35. M4.55 → M4.56 手机终于能看到并回答提问：M4.54 之后真机仍是「电脑上有、手机没有」。M4.55 先把门禁放宽成「手机连着就接管」（插件 0.2.37，测试 162/162），手机上还是没有——在监听器入口写文件日志才看清：`ctx.on('user-questions/request', …)` **一次都没被调用**。原因是 DSH 的问答工具有两条路：`userQuestions.ask()` 才派发 waterfall，`askTimed()`（「前端等，客户端先答就算数」那条）不派发，`ask_user_question` 走的正是后者，所以插件那条监听器对这类提问永远收不到。M4.56 改从**会话日志**认：`collectLogQuestions()` 找「`tool/call` 名是 `ask_user_question`、却没有配对 `tool/result`」的调用，`questionId` 直接用 `callId`；会话详情的 `questions` 与 `/desktop/pending` 都是「waterfall + 日志」两路合并（按 `questionId` 去重），所以手机无论停在哪一页，「工作区」的待回答横幅都能出现，打开会话能看到卡。回答时先走原来的 `pendingQuestions`，查不到就用 `agents.get(sessionId)` 拿到 Agent、`userQuestions.answer(agent, callId, { answers })` 交回；「跳过」按每题空 `selected` 生成完整批次，避免 `BAD_ANSWER`。插件 **0.2.41** 已热载（`/api/v1/health` 回读 `version:"0.2.41"`、`agentOnline:true`），手机 App 不用换包。**注意**：0.2.40 曾把结果事件的 id 认成 `callId`（实际在 `toolCallId` 上），导致历史提问全被当成待答、手机一口气列出 8 张空卡；0.2.41 已修（`toolCallId ?? callId ?? message.source.callId`）。**限制**：只认「电脑上还活着」的 live 会话（已归档会话的日志不在 `sessions.list()` 里，认不到）；手机要连着插件（`apps > 0`）才看得到；电脑先答、手机还没刷新那一两秒里在手机上点提交会提示「回答失败」（结果不受影响，因为晚到的提交本来就被丢弃）。
-36. M4.57 功能页新增「接收文件」：电脑端（或 AI）把做好的文件放进插件状态目录的 `received/`（这台机器是 `<DSH 数据目录>\dsh-plugin-m1\received\`），手机「功能 → 接收文件」按修改时间倒序列出，点开复用文件预览——图片能放大、`.docx` 按文字读（M4.52）、`.md`/`.txt` 在 App 里直接看正文，其它交给系统应用。接口是 `GET /api/v1/received`（列表）、`GET|DELETE /api/v1/received/<name>`（需要 app token；文件名只取最后一段，`..`/隐藏名一律拒绝）。**限制**：单向只读（App 不删不改、不写回电脑）；只列一层，不进子目录，跳过隐藏文件；最多 200 条；需要插件 0.2.42+，旧插件页面会显示「读不到接收文件」。
+36. M4.57 功能页新增「接收文件」：电脑端（或 AI）把做好的文件放进插件状态目录的 `received/`（这台机器是 `<DSH 安装目录>\.dsh\dsh-plugin-m1\received\`），手机「功能 → 接收文件」按修改时间倒序列出，点开复用文件预览——图片能放大、`.docx` 按文字读（M4.52）、`.md`/`.txt` 在 App 里直接看正文，其它交给系统应用。接口是 `GET /api/v1/received`（列表）、`GET|DELETE /api/v1/received/<name>`（需要 app token；文件名只取最后一段，`..`/隐藏名一律拒绝）。**限制**：单向只读（App 不删不改、不写回电脑）；只列一层，不进子目录，跳过隐藏文件；最多 200 条；需要插件 0.2.42+，旧插件页面会显示「读不到接收文件」。
 
 37. M4.58 回答失败要说清原因：手机点提问卡的「提交」以前一律显示「接口不存在（HTTP 404）」，因为插件失败时只回 `false`、服务端一律 404 `QUESTION_NOT_FOUND`，而 App 对 404 有固定文案。现在插件会记录失败原因（`QUESTION_NOT_FOUND` / `NO_QUESTION_SERVICE` / `NO_AGENT` / `NOT_CONTINUED` / 异常码），服务端改回 **409** 并把原因带进 `message`——手机端收到 409 会显示「请求失败（HTTP 409）：<原因>」，不用重装 App 就能看到。插件 0.2.43，测试 178/178；仍然受 `HMR transactions cannot be nested` 影响，需要彻底重启 DSH 才生效。0.2.44 接着把它真正修通：DSH 里 `userQuestions.answer()` 只认 `continued`（超时后）的提问，还在等回答的（open）提问只能靠 waterfall 的返回值来答；而 waterfall 拿到的 `req` 没有 `wait.callId`，插件只能用自造 `q_…` 当键、手机传的却是会话日志里的真实 `call_00_…`，两边对不上。现在加了「会话 + 题面」的内容键：两路去重只留一张带选项的卡，回答时先按内容找到 waterfall 的挂起项并 `finish()`。真机上手机选的答案能回到工具，卡片随后自己收起；插件 0.2.44（测试 180/180）。
 38. M4.59 手机原生回答提问：前几轮都卡在同一处——`user-questions/request` 是 agent 作用域 waterfall，插件从根 `ctx` 注册监听器收不到；从会话日志猜出来的提问又只能调 `userQuestions.answer()`，它对 `open` 提问一律返回 false。这一轮把 `app.asar` 里的 `@deepseek-ai/dsh-api-gateway` 解开，还原出远程事件协议：WS `/api/remote.mux` 发 `{type:'open', endpoint:'$events', payload:{args:{}}}`，下行 `ready`/`emit`/`waterfall`/`cancel`，回答走 `POST /api/$events/result` 的 `client-request`（`payload` 必须恰好一个 `args` 字段）。插件自己用 `connection.authenticatedUrl()` 登录成浏览器客户端订阅这条流，收到 `waterfall` 后存进 `remoteQuestions`，手机提交时把答案作为 waterfall 返回值回给 Host。真机 `REPLY … {"ok":true}`，工具拿到的就是手机上选的项；插件 0.2.60，测试 182/182，手机端不用换包。坑：不回 WebSocket pong 会被关连接（表现为拿到 `ready` 后再无帧）；`/connect?token=` 不适合 WS，要用 `/?token=`。
@@ -1514,7 +1514,7 @@ ode --test 15/15。
 
 45. M4.68 充值只保留 App 内入口：用户要求「只保留在应用内打开充值页」。充值页删掉「用系统浏览器打开」与 `_openRecharge()`（连 `_urlOpener` 字段一起去掉），内嵌页删掉右上角浏览器出口，`urlOpener` 只在 `onNavigationRequest` 里把 `alipays://` / `weixin://` 交给系统。0.4.62+83，测试 545/545、analyze 0 error。
 
-46. M4.69 扫描件 .docx 按页看图：用户那份「没读出文字」的 `示例作业.docx` 其实没有文字（`<w:t>` 计数 0），是四张扫描照片。`office_text.dart` 新增 `docxImagePages()`（`word/media/` 图片、按数字排序、上限 24 张 / 40 MB），文件页在抽不出文字时改渲染竖排图片预览，底栏说明改成「这份文档没有可选文字（多半是扫描件）」。0.4.63+84，测试 550/550、analyze 0 error。
+46. M4.69 扫描件 .docx 按页看图：用户那份「没读出文字」的 `习题一.docx` 其实没有文字（`<w:t>` 计数 0），是四张扫描照片。`office_text.dart` 新增 `docxImagePages()`（`word/media/` 图片、按数字排序、上限 24 张 / 40 MB），文件页在抽不出文字时改渲染竖排图片预览，底栏说明改成「这份文档没有可选文字（多半是扫描件）」。0.4.63+84，测试 550/550、analyze 0 error。
 
 47. M4.70 打不开的文件不再给按钮：用户装上 0.4.63 后仍说「还是不行」，截图里那条 toast 其实是「用其他应用打开」失败了——这台手机没有能处理 .docx 的应用。`FileOpener` 新增 `canOpenBytes()`（原生 `resolveActivity` 只查不启动），文件页据此藏掉按钮、兜底改「这个文件只能在电脑上看」并引导分享。0.4.64+85，测试 553/553、analyze 0 error。
 
@@ -1523,3 +1523,5 @@ ode --test 15/15。
 49. M4.72 修好「分享失败 / 打不开」：根因是 `content://` 地址生成用错组件（androidx `FileProvider` 配自写 `ShareFileProvider`，缺 `FILE_PROVIDER_PATHS` 必抛异常）；改成 `ShareFileProvider.uriForPreview/uriForShare`，补齐 `preview/`、`share/files/` 与 MIME，并把原生原因带回提示。0.4.66+87。
 
 50. M4.73「用其他应用打开」改成 `Intent.createChooser`，每次弹候选应用列表（标题「用其他应用打开」），不再受默认打开方式影响。0.4.67+88。
+
+51. M4.74 Tailscale 成为一等连法：插件早把 `100.64/10` 排第一，但页面与文档只写「局域网 / 公网隧道」。新增 `classifyAddress()` 给地址打 `kind`（tailscale / lan / virtual），`/api/v1/pair/info` 多返回 `tailscaleUrls`，配网页把首张卡改成「局域网 / Tailscale」并单列一条 100.x 地址，App 连接页文案同步成「局域网 · Tailscale · 公网隧道」。插件 0.2.70，测试 195/195。

@@ -238,7 +238,7 @@ class _ConnectScreenState extends State<ConnectScreen> {
               SectionTitle(
                 '服务器',
                 trailing: Text(
-                  'Cloudflare 隧道或局域网',
+                  '局域网 · Tailscale · 公网隧道',
                   style: TextStyle(color: palette.text3, fontSize: 11.5),
                 ),
               ),
@@ -250,8 +250,8 @@ class _ConnectScreenState extends State<ConnectScreen> {
                 autocorrect: false,
                 style: TextStyle(color: palette.text, fontSize: 13.5),
                 decoration: const InputDecoration(
-                  hintText: '192.168.1.x:8787',
-                  helperText: '扫码会自动填这一行；也可手输电脑局域网地址 + 8787 端口，或 cloudflared 给的 https 公网地址',
+                  hintText: '192.168.1.10:8787',
+                  helperText: '扫码会自动填这一行；也可手输电脑局域网地址 + 8787 端口、Tailscale 的 100.x 地址，或 cloudflared 给的 https 公网地址',
                   helperMaxLines: 3,
                   prefixIcon: Icon(Icons.public_rounded, size: 19),
                 ),

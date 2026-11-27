@@ -25,7 +25,7 @@
 | 后端 | `backend/`（Spring Boot 3.5.16 + Java 21）：`/api/v1/health`、`/api/v1/auth/pair`、`/ws`；单 agent 顶号、多 app 广播；内存态 |
 | Agent | `agent/src/relay/` + `scripts/serve.ts`：心跳 30s、指数退避重连、队列 100、审批转发、路径越界拒绝、脱敏 |
 | 手机 | `app/lib/services/` + `live_store.dart` + `connect_screen.dart`：真实/演示双模式，审批自动弹 ApprovalSheet |
-| 公网 | Cloudflare Quick Tunnel（`tools/bin/cloudflared.exe` 2026.10.7）→ `https://<公网隧道>.trycloudflare.com`；Agent 永远出站，无需公网 IP |
+| 公网 | Cloudflare Quick Tunnel（`tools/bin/cloudflared.exe` 2026.10.7）→ `https://xxx.trycloudflare.com`；Agent 永远出站，无需公网 IP |
 | 自动化 E2E | 本机 **6/6**、公网隧道 **6/6**（设备在线/建会话/真实 prompt/取消/审批批准/审批拒绝） |
 | 手机人工验证 | 连接 → 发指令 → 真实回复（工作区 `agent\.m1ws`）→ 审批弹层 → 点「允许一次」→ 电脑真实生成 `m1-phone-ok.txt`（内容 `phone-ok`） |
 | 截图 | `docs/mobile/screenshots/09_live_connected.png` … `13_live_result.png` |
@@ -107,7 +107,7 @@
 | 六页重做 | 助手（用户蓝气泡/助手无气泡左侧 3px 竖线/折叠工具卡/胶囊输入）、连接（6 格配对码，当前格蓝边浅蓝底）、任务（统计卡/筛选胶囊/进度条）、电脑（权限列表/紧急停止危险卡）、项目（工作区卡/权限胶囊）、我的（渐变头像/审计/外观三选/关于） |
 | 导航 | `root_shell.dart` 自定义底栏：白底 94% + 1px 顶线 + 选中圆点，高 78 + SafeArea（不再用 Material `NavigationBar`） |
 | 验证 | Lead 独立 `flutter test` **154/154**（exit 0，既有 143 零回归 + 新增 11）、`flutter build apk --debug` 成功；`aapt dump badging` → **`versionName='0.1.4-m2.3' versionCode='5'`**；APK **150,808,223 字节**，SHA256 `752016BE23160D6ACD079C81D436FD19D800CD406E10A4654B14D9226CF28100` |
-| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.4-m2.3.apk`；公网 `https://<公网隧道>.trycloudflare.com/DeepSeek-Remote-v0.1.4-m2.3.apk`；局域网 `http://192.168.1.x:8099/DeepSeek-Remote-v0.1.4-m2.3.apk` |
+| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.4-m2.3.apk`；公网 `https://tennis-august-colorado-bryant.trycloudflare.com/DeepSeek-Remote-v0.1.4-m2.3.apk`；局域网 `http://192.168.1.115:8099/DeepSeek-Remote-v0.1.4-m2.3.apk` |
 | 遗留 | 本机无真机/可用模拟器，浅/深色实机截图未补拍；深色对比度为 token 计算值；`flutter analyze` 未跑；分享卡配色跟随主题但系统面板未真机实测 |
 | 报告 | `docs/research/M2_3_REPORT.md` |
 
@@ -122,7 +122,7 @@
 | 新增 | `app/lib/widgets/empty_state.dart`（图标 + 标题 + 一句说明 + 主按钮，五页复用） |
 | 六页 | 未连接：统一「连接空态」，点按钮进连接页；已连接：助手一行状态条（圆点+设备名+已连接+会话切换+分享）+ 消息流；任务筛选胶囊+任务卡（无统计三卡）；电脑设备卡+权限摘要弹层+紧急停止；项目只读真实 `workspaceRoots`；我的账号+连接状态+外观+关于；连接页两字段+两按钮+一行步骤 |
 | 验证 | `grep -ri "演示" app/lib` **= 0**；Lead 独立 `flutter test` **164/164**（exit 0，既有 154 零回归 + M2.4 新增 10）；真实链路 `m1-client` **6/6 PASS**（`evidence/m1/e2e-2026-11-03T09-24-31-458Z.json`）；`aapt` → **`versionName='0.1.5-m2.4' versionCode='6'`** |
-| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.5-m2.4.apk`（**150,758,731 字节**，SHA256 `4BECB7D9…BDC945A`）；公网 `https://<公网隧道>.trycloudflare.com/DeepSeek-Remote-v0.1.5-m2.4.apk`；局域网 `http://192.168.1.x:8099/DeepSeek-Remote-v0.1.5-m2.4.apk` |
+| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.5-m2.4.apk`（**150,758,731 字节**，SHA256 `4BECB7D9…BDC945A`）；公网 `https://tennis-august-colorado-bryant.trycloudflare.com/DeepSeek-Remote-v0.1.5-m2.4.apk`；局域网 `http://192.168.1.115:8099/DeepSeek-Remote-v0.1.5-m2.4.apk` |
 | 遗留 | 本机无真机/可用模拟器，空态与已连接界面截图待补拍；未连接时无法体验页面功能（用户要求，预期行为）；项目页文件浏览属 B 档；`flutter analyze` 仍未跑 |
 | 报告 | `docs/research/M2_4_REPORT.md` |
 
@@ -139,7 +139,7 @@
 | 接口实测 | 本地 `GET /version` 200 JSON、`HEAD /apk` 200 / 150,782,707 字节；公网隧道同 JSON 与 HEAD 200；8080 主服务已重启（pid 28512），health `agentOnline=true`；sha256 接口值与文件一致 |
 | 回归 | 真实链路 `node tools/m1-client.ts` → **6/6 PASS**（`evidence/m1/e2e-2026-11-03T10-33-10-527Z.json`） |
 | 构建/版本 | APK **150,782,707 字节**，`aapt` → **`versionName='0.1.6-m2.5' versionCode='7'`**，SHA256 `349D7C8B…C4781B1` |
-| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.6-m2.5.apk`；`dist/DeepSeek-Remote-latest.apk`（后端更新源）；公网 `https://<公网隧道>.trycloudflare.com/DeepSeek-Remote-v0.1.6-m2.5.apk`；局域网 `http://192.168.1.x:8099/DeepSeek-Remote-v0.1.6-m2.5.apk` |
+| 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.6-m2.5.apk`；`dist/DeepSeek-Remote-latest.apk`（后端更新源）；公网 `https://tennis-august-colorado-bryant.trycloudflare.com/DeepSeek-Remote-v0.1.6-m2.5.apk`；局域网 `http://192.168.1.115:8099/DeepSeek-Remote-v0.1.6-m2.5.apk` |
 | 遗留 | 首次需手动装 0.1.6（0.1.5 无更新模块）；不能静默安装；下载后仅按 size 校验（sha256 待接入逐块校验）；debug 签名需前后一致；本机无真机，安装器跳转仅编译+单测级验证，需真机点一次 |
 | 报告 | `docs/research/M2_5_REPORT.md` |
 
@@ -153,7 +153,7 @@
 | Agent | 新增 `agent/src/relay/workspace-fs.ts`（路径校验/忽略目录/500 条上限/256 KiB 预览/1 MiB 硬上限/二进制与 sha256）；`relay-agent.ts` 新增 `handleWorkspaceList`/`handleFileRead`/`sendWorkspaceError`，capabilities 上报 `workspaceList/fileRead=true`；`protocol.ts` 补 `workspaceList?: boolean`；单测 `agent/tests/unit/workspace-fs.test.ts` **9/9 PASS** |
 | 后端 | `RelayHub.java`：`APP_FORWARD_TYPES` 增加 `workspace.list`/`file.read`（离线 `DEVICE_OFFLINE`），`AGENT_BROADCAST_TYPES` 增加两个 `.result`；结果只广播、**不分配 seq、不写 task_events** |
 | 手机端 | `services/workspace_models.dart`；`live_store.dart` 增加 `workspaceRoots`/`listDirectory`/`readWorkspaceFile`/`setPendingWorkspace`（requestId→Completer、20s 超时、断线失败清理、`createConversation` 带 workspacePath）；`projects_screen.dart` 重写、新增 `project_browser_screen.dart`（面包屑/上级/刷新/重试）与 `file_viewer_screen.dart`（等宽/行号/复制/sha256/截断提示）；`assistant_screen.dart` 工作区胶囊；版本 `0.1.7+8` / `versionName=0.1.7-m2.6` |
-| 真实链路验证 | `node tools/verify-project-sync.ts` → **14/14 PASS**（`evidence/m2/project-sync-2026-11-04T01-51-07-111Z.json`）：`workspaceRoots=["<项目根>"]`、根目录 19 条目录在前、子目录前缀、`README.md` 40,020 B + sha256、`FILE_NOT_FOUND`/`PATH_NOT_ALLOWED`、A4 绑定 `docs/research` 后 Harness 输出 `当前工作目录：<项目根>\docs\research` 且 `state=completed` |
+| 真实链路验证 | `node tools/verify-project-sync.ts` → **14/14 PASS**（`evidence/m2/project-sync-2026-11-04T01-51-07-111Z.json`）：`workspaceRoots=["D:\\用户\\项目\\deepseek手机端"]`、根目录 19 条目录在前、子目录前缀、`README.md` 40,020 B + sha256、`FILE_NOT_FOUND`/`PATH_NOT_ALLOWED`、A4 绑定 `docs/research` 后 Harness 输出 `当前工作目录：<项目根>\docs\research` 且 `state=completed` |
 | 测试/构建 | Lead 独立 `flutter test` **190/190**（exit 0，新增 12 项 + 既有 178 零回归）；`aapt` → **`versionName='0.1.7-m2.6' versionCode='8'`**；APK **150,820,399 字节**，SHA256 `9B1661E1…A27150177` |
 | 回归 | `node tools/m1-client.ts` → **6/6 PASS**（`evidence/m1/e2e-2026-11-04T02-19-12-109Z.json`） |
 | 交付 | 根目录 `DeepSeek Remote AI 手机端 v0.1.7-m2.6.apk`；`dist/DeepSeek-Remote-latest.apk` 换新；后端 `app.update.version-code=8`/`version-name=0.1.7-m2.6` 已生效（`GET /api/v1/app/version` 本地+公网返回 8，`HEAD /apk` 200/150,820,399） |
@@ -167,7 +167,7 @@
 | 项 | 结果 |
 |---|---|
 | 协议/实现 | `M1_WORKSPACE_ROOTS`（分号/换行分隔）优先于 `M1_WORKSPACE_ROOT`，**第一个为默认工作区**；`device.status.workspaceRoots` 返回全部根；`workspace.list`/`file.read`/`conversation.create` 路径校验改为「落在任一授权根内」（否则 `PATH_NOT_ALLOWED`）；`agent/src/relay/workspace-fs.ts` 的 `resolveWorkspacePath` 接受 `string[]` |
-| 当前配置 | `D:\Projects` + `C:\Users\user\Desktop` |
+| 当前配置 | `D:\用户` + `C:\Users\user\Desktop` |
 | 工具 | `tools/m1-up.ps1` 新增 `-WorkspaceRoots 'D:\根A;C:\根B'`（单根 `-WorkspaceRoot` 仍可用）；新增 `tools/verify-multi-root.ts` 多根验证脚本 |
 | 验证 | 真实链路 **6/6 PASS**（`evidence/m2/multi-root-2026-11-04T06-40-41-094Z.json`：两棵根均可列目录、Desktop 29 项、`C:\Windows\Temp` 被拒）；`workspace-fs` 单测 **10/10**；M1 回归 **4/4**（`evidence/m1/e2e-2026-11-04T06-42-03-904Z.json`） |
 | 手机端 | 无需改代码：`projects_screen.dart` 已按 `workspaceRoots` 列表渲染多个根 |
@@ -295,7 +295,7 @@ M2.8 交付后，"App 要更新"仍指向 Java 后端。这一步把 `GET /api/v
 | 新增模块 | `dsh-plugin-m1/lib/appupdate.js`：`resolveApkPath()`（配置 → `stateDir/app/` → `appProjectDir/dist/` → `cwd/dist/`）、`readProjectVersion()`（`pubspec.yaml` 的 `version: X+N` 与 `local.properties` 的 `flutter.versionCode` **取版本号较大者**）、`AppUpdate`（`mtime+size` 缓存 sha256、`versionPayload()`、`streamApk()` 支持 HEAD） |
 | 路由 | `GET /api/v1/app/version`（无包 404 `APP_UPDATE_UNAVAILABLE`）、`GET\|HEAD /api/v1/app/apk`（`application/vnd.android.package-archive`）；公网隧道同样可用 |
 | 配置 | `appApkPath` / `appProjectDir` / `appVersionCode` / `appVersionName` / `appNotes`；默认 `appProjectDir = dirname(bundleRoot)`（profile 里是 junction，Node 解析到真实项目根） |
-| 运行实例 | 重载后插件 **v0.2.0**，公网地址每次重载都会变（当前 `https://<公网隧道>.trycloudflare.com`），`/api/v1/app/version` → `versionCode=10 versionName=0.1.9-m2.8 size=68,716,932 sha256=620cb8bf…` |
+| 运行实例 | 重载后插件 **v0.2.0**，公网地址每次重载都会变（当前 `https://secondary-ask-charts-license.trycloudflare.com`），`/api/v1/app/version` → `versionCode=10 versionName=0.1.9-m2.8 size=68,716,932 sha256=620cb8bf…` |
 | 验收 | 中继侧 `node tools/probe-update.mjs` **9/9 PASS**；App 自己的 `UpdateService` 实跑 **PASS**（`app/tool/live_update_check.dart http://127.0.0.1:8787 9`：检查到 0.1.9/code 10 → 下载 68,716,932 字节，与服务器 size 一致）；公网 `version` + `HEAD apk` 均 200 |
 | 版本同步（顺手修） | `app/lib/app_version.dart` 与 `app/android/local.properties` 仍是 0.1.8/9（M2.8 只改了 `pubspec.yaml` 与 gradle），App「关于」会显示旧版本、更新比较也用旧码 → 已改成 `10` / `0.1.9-m2.8`，三处断言同步，`flutter test` **205/205 PASS**；APK 已按修正后的源码重打：`dist/DeepSeek-Remote-AI-v0.1.9-m2.8.apk`（68,716,932 字节，sha256 `979f9eb5…`，`aapt` 复核 versionCode 10 / versionName 0.1.9-m2.8） |
 | 回归 | 重载后 M1 全链路再跑一遍 **6/6 PASS**（`evidence/m1/e2e-2026-11-05T07-52-22-462Z.json`）；配网页截图 `evidence/m1/pair-page-v020-2026-11-05.png`（插件 v0.2.0、双码、当前隧道地址） |
@@ -351,7 +351,7 @@ M2.8 交付后，"App 要更新"仍指向 Java 后端。这一步把 `GET /api/v
 | 版本 | 插件 **0.2.3**（health/设置页版本改成每次从 `package.json` 重读，避免 ESM 缓存旧值）；App **0.2.2+13 / 0.2.2-m2.9.2** |
 | 测试 | `flutter test` **208/208**（新增「任务 REST 404 后改走桌面镜像并映射状态」） |
 | 构建 | `dist/DeepSeek-Remote-AI-v0.2.2-m2.9.2.apk`（68,848,236 字节，versionCode 13，sha256 前缀 `BE9DAC11D1EE2226`） |
-| 实测 | 模拟器任务页列出电脑上的 3 个会话（deepseek手机端 / 示例项目B / 示例项目C），带目录与「已完成」状态；截图 `docs/research/evidence/m2/m2_9_2-desktop-tasks.png` |
+| 实测 | 模拟器任务页列出电脑上的 3 个会话（deepseek手机端 / 桌面萌宠 / 人生记录系统），带目录与「已完成」状态；截图 `docs/research/evidence/m2/m2_9_2-desktop-tasks.png` |
 | 已知限制 | 只读：点进去看不了桌面会话的时间线，也不能接管/继续；时间戳目前取事件发生时间，未接会话自身的 updatedAt |
 
 ### M2.9.3 桌面会话直播（2026-11-10 补充）
@@ -397,7 +397,7 @@ M2.8 交付后，"App 要更新"仍指向 Java 后端。这一步把 `GET /api/v
 | 计数 | 头部胶囊显示「直播中 · N 条消息 / 已结束 · N 条消息」，N 只算可见消息 |
 | 版本 | App **0.2.5+16 / 0.2.5-m2.9.5**（插件仍 0.2.4） |
 | 构建 | `dist/DeepSeek-Remote-AI-v0.2.5-m2.9.5.apk`（68,865,092 字节，versionCode 16） |
-| 实测 | 模拟器打开「示例项目B」直播页：只剩助手正文段落，没有工具卡/结果行/轮次分隔；头部显示「直播中 · 3 条消息」；截图 `docs/research/evidence/m2/m2_9_5-chat-only.png` |
+| 实测 | 模拟器打开「桌面萌宠」直播页：只剩助手正文段落，没有工具卡/结果行/轮次分隔；头部显示「直播中 · 3 条消息」；截图 `docs/research/evidence/m2/m2_9_5-chat-only.png` |
 | 测试 | `flutter test` **211/211** |
 
 ### M2.9.6 自动续连：不用每次重新配对（2026-11-10 补充）
@@ -425,7 +425,7 @@ M2.8 交付后，"App 要更新"仍指向 Java 后端。这一步把 `GET /api/v
 | 实现 | `app/lib/screens/scanner_screen.dart`：新增 `_pickFromGallery()` → `ImagePicker().pickImage(source: gallery, maxWidth: 2400)` → `MobileScannerController.analyzeImage(path)`，复用同一个 `_tryBarcodes()` 解析；识别不到给「这张图片里没有识别到配对二维码」提示；相机打不开的错误页也带这个入口 |
 | 版本 | App **0.2.7+18 / 0.2.7-m2.9.7**（插件仍 0.2.6） |
 | 测试 | `flutter test` **215/215** |
-| 实测 | 模拟器推送一张二维码 GIF 到相册 → 扫码页点「从相册选择」→ 选中 → 自动返回连接页并填好 `http://192.168.1.x:8787` + `000000`，直接重连成功（截图 `docs/research/evidence/m2/m2_9_7-gallery-scan.png`） |
+| 实测 | 模拟器推送一张二维码 GIF 到相册 → 扫码页点「从相册选择」→ 选中 → 自动返回连接页并填好 `http://192.168.1.233:8787` + `388880`，直接重连成功（截图 `docs/research/evidence/m2/m2_9_7-gallery-scan.png`） |
 | 构建 | `dist/DeepSeek-Remote-AI-v0.2.7-m2.9.7.apk`（**69,691,722 字节**，versionCode 18） |
 
 ### M3.0 对话折叠 + 附件上传 + 云端直连（2026-11-11 补充）
@@ -827,13 +827,13 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 > **下一步**：完整退出重开 DSH（加载插件 0.2.20）→ 修好 `tools\verify-plugin-m4.ps1` 的 PS 5.1 解析问题后跑 14/14 → 手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.12-m4.12）→ 电脑档问一个带代码块/表格的问题，核对排版。
 
-### M4.13 工作区按项目分组 + 新建项目固定落 `D:\Projects\项目`（2026-11-16 补充）
+### M4.13 工作区按项目分组 + 新建项目固定落 `<项目根>`（2026-11-16 补充）
 
 | 项 | 结果 |
 | --- | --- |
-| 用户诉求 | 「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」；追问后定：「先只做新建项目，新建对话以后再说」+「固定建在 `D:\Projects\项目`」 |
+| 用户诉求 | 「按照工作区项目分类，做成和电脑上一样的，可以折叠打开，并且可以新建对话，新的项目区是建立在电脑端"D:/用户/项目"这个文件里面」；追问后定：「先只做新建项目，新建对话以后再说」+「固定建在 `<项目根>`」 |
 | 根因 | 工作区页是**平铺的会话卡**：任务卡 + 空目录卡 + 底部「以前跑过、电脑上已经看不到的会话」存档组，三摊各排各的，同目录的多个会话各占一张，完全看不出归属 |
-| 手机端 | 新增 **`app/lib/services/project_groups.dart`**（零依赖纯函数：`ProjectGroup`、`projectNameOf`、`parentPathOf`、`groupWorkspacesByProject`）；`tasks_screen.dart` 把三摊列表换成 `_ProjectGroupCard` 列表（头部整行点折叠/展开，`_collapsed` 记路径；展开后 `_SessionRow` 左侧 3×16 竖线按 等待授权/运行中/其他 着色），**删除 `_WorkspaceCard`**；空目录标「空项目」胶囊；胶囊文案 `新建工作区` → `新建项目`；`workspace_create_dialog.dart` 新增 `kDefaultProjectParent = r'D:\Projects\项目'`，授权根包含项目根时 `parentDir` 固定成它，否则退回第一个授权根并提示 |
+| 手机端 | 新增 **`app/lib/services/project_groups.dart`**（零依赖纯函数：`ProjectGroup`、`projectNameOf`、`parentPathOf`、`groupWorkspacesByProject`）；`tasks_screen.dart` 把三摊列表换成 `_ProjectGroupCard` 列表（头部整行点折叠/展开，`_collapsed` 记路径；展开后 `_SessionRow` 左侧 3×16 竖线按 等待授权/运行中/其他 着色），**删除 `_WorkspaceCard`**；空目录标「空项目」胶囊；胶囊文案 `新建工作区` → `新建项目`；`workspace_create_dialog.dart` 新增 `kDefaultProjectParent = r'<项目根>'`，授权根包含项目根时 `parentDir` 固定成它，否则退回第一个授权根并提示 |
 | 插件端 | 0.2.20 内置：`DEFAULT_PROJECT_PARENT`、`resolveParentDir()`（授权根本身/子目录，或目录真实存在）、`projectParentPath()`；`createDesktopWorkspace(name, parentDir)`；`listDesktopWorkspaces()` 每行加 `parent` 与 `isProject`；`server.js:307-330` 透传 `body.parentDir` |
 | 版本 | App **0.4.13+40**（`0.4.13-m4.13`）；插件 **0.2.20** |
 | 测试 | `flutter test` **353/353**（344 + 新增 7：`app/test/project_groups_m4_13_test.dart`，+ `workspace_m4_test.dart` 新增 2 例）；插件 `node --test` **39/39**（31 + 新增 8：`test/workspace-create.test.js`） |
@@ -844,7 +844,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（`adb devices` 无设备），分组/折叠/新建由 widget 测试覆盖 |
 | 文档 | `docs/research/M4_13_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：**完整退出 DSH 重开**（加载插件 0.2.20，`GET /api/v1/health` 的 `version` 应变成 `0.2.20`）→ 手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.13-m4.13，versionCode 40，可覆盖安装）→ 工作区页应看到按目录折叠的项目卡，点「新建项目」应真的建在 `D:\Projects\` 下。之后再谈「在项目里新建会话」。
+> **下一步**：**完整退出 DSH 重开**（加载插件 0.2.20，`GET /api/v1/health` 的 `version` 应变成 `0.2.20`）→ 手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.13-m4.13，versionCode 40，可覆盖安装）→ 工作区页应看到按目录折叠的项目卡，点「新建项目」应真的建在 `<项目根>\` 下。之后再谈「在项目里新建会话」。
 
 ### M4.14 直播页不再空手：首屏拉够正文 + 授权窗口放宽（2026-11-16 补充）
 
@@ -873,8 +873,8 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 现象 | 用户反馈「插件怎么没了，连不上了」：`127.0.0.1:8787` 不监听，手机连不上 |
 | 根因 | **不是代码坏了**：profile `C:\Users\user\.dsh\profiles\desktop\package.json` 的 `dsh.profile.bundles` 里没有 `dsh-plugin-m1`（`plugin_manager` 回报该 bundle `enabled: false`），所以那次 DSH 启动根本没加载插件。`C:\Users\user\.dsh\profiles\desktop\package.json` 的 mtime 是 15:35:24，与本会话的改动时间不重合，具体是谁把它摘掉的没有留下日志（`.plugin-manager\logs` 最后一条操作是 10:22） |
 | 恢复 | `plugin_manager` `set_bundle(target=dsh-plugin-m1, enabled=true)` → `applied`，**热加载生效，不用重开 DSH**；`GET /api/v1/health` 立刻回到 `{"status":"ok","version":"0.2.21","agentOnline":true}`，说明 M4.14 的插件改动已经真的在跑 |
-| 连带问题 | cloudflared **快速隧道**每次重启都会换一个随机域名（本次 `https://<公网隧道>.trycloudflare.com`），手机里存的是旧地址 → 光把插件起来还是连不上，**手机要重新配对** |
-| 重新配对 | 浏览器打开 `http://127.0.0.1:8787/pair`（页面已确认含新公网地址），配对码 `000000`；同 Wi-Fi 也可用局域网地址 `http://192.168.1.x:8787`（不随隧道重启而变） |
+| 连带问题 | cloudflared **快速隧道**每次重启都会换一个随机域名（本次 `https://fwd-encoding-packard-hospitals.trycloudflare.com`），手机里存的是旧地址 → 光把插件起来还是连不上，**手机要重新配对** |
+| 重新配对 | 浏览器打开 `http://127.0.0.1:8787/pair`（页面已确认含新公网地址），配对码 `388880`；同 Wi-Fi 也可用局域网地址 `http://192.168.1.233:8787`（不随隧道重启而变） |
 | 线上验证 | 用真实手机 token 复测：`GET /desktop/tasks` 正常；`GET /desktop/sessions/<id>/events`（无 `afterSeq`）→ `events=80`、**`chat=17`**（M4.14 前同条件是 0 条正文）；`afterSeq=lastSeq-40` → 返回 `13` 条、`seq` 落在 `4513…4550`（最新一段，不再是积压时的最早几条） |
 | 待跟进 | ①`dsh.profile.bundles` 里的 `dsh-plugin-m1` 为什么会消失，需要盯一次下次重启是否复现；②隧道地址每次重启都变，长期应配 `config.publicUrl`（自建固定域名/named tunnel），否则每次重启都要重新配对 |
 
@@ -882,21 +882,21 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 结果 |
 | --- | --- |
-| 现象 | 用户 16:14 截图反馈「新项目要建立的位置不对」：新建对话框提示「将建在: D:\Projects\课程\上册\计算方法实验」 |
+| 现象 | 用户 16:14 截图反馈「新项目要建立的位置不对」：新建对话框提示「将建在: <课程作业>\计算方法实验」 |
 | 截图里的第二个问题 | 标题仍是「新建工作区」、label 仍是「工作区名称」→ 手机上装的还是 M4.13 之前的旧 APK（M4.13 已改成「新建项目 / 项目名称」）。所以「装新版就好」不成立，落点逻辑本身也错 |
-| 根因 | `app/lib/widgets/workspace_create_dialog.dart` 的 `_usesProjectParent` 要求 `liveStore.workspaceRoots` 里**恰好有一项等于** `D:\Projects\项目`；但 `GET /desktop/workspaces` 返回的 9 条全是具体项目（`…\项目\deepseek手机端` 等），`…\项目` 是它们的**父目录**，从不在列表里 → 判成「没授权」→ `parentDir: null` → 插件 `resolveParentDir(null)` 退回第一个授权根（本例 `…\计算方法实验`） |
-| 插件端 | **一行未改**：现场用手机 token 实测 `POST /desktop/workspaces` `{"name":"m4-14-probe-161524","parentDir":"D:\\Projects\\项目"}` → `{"ok":true,"path":"D:\\Projects\\m4-14-probe-161524","parent":"D:\\Projects\\项目"}`，`…\计算方法实验\m4-14-probe-161524` 不存在，探针目录事后已删。0.2.21 的 `resolveParentDir()` 本来就是「显式指定且目录真实存在就放行」，M4.13 只需要把 `parentDir` 传对 |
+| 根因 | `app/lib/widgets/workspace_create_dialog.dart` 的 `_usesProjectParent` 要求 `liveStore.workspaceRoots` 里**恰好有一项等于** `<项目根>`；但 `GET /desktop/workspaces` 返回的 9 条全是具体项目（`…\项目\deepseek手机端` 等），`…\项目` 是它们的**父目录**，从不在列表里 → 判成「没授权」→ `parentDir: null` → 插件 `resolveParentDir(null)` 退回第一个授权根（本例 `…\计算方法实验`） |
+| 插件端 | **一行未改**：现场用手机 token 实测 `POST /desktop/workspaces` `{"name":"m4-14-probe-161524","parentDir":"D:\\用户\\项目"}` → `{"ok":true,"path":"D:\\用户\\项目\\m4-14-probe-161524","parent":"D:\\用户\\项目"}`，`…\计算方法实验\m4-14-probe-161524` 不存在，探针目录事后已删。0.2.21 的 `resolveParentDir()` 本来就是「显式指定且目录真实存在就放行」，M4.13 只需要把 `parentDir` 传对 |
 | 手机端 | 删掉 `_rootHint` / `_usesProjectParent`，改为 `String get _targetParent => kDefaultProjectParent`（去尾反斜杠），`_submit` 无条件 `parentDir: _targetParent`；提示文案统一成 `'将建在：$_targetParent\\$_preview'`（全角冒号），删除「电脑端还没授权根目录」「先建在第一个授权目录下」两个已不存在的分支 |
 | 测试 | `app/test/workspace_m4_test.dart` 的「成功创建后关闭并返回结果」改断言 `find.textContaining(kDefaultProjectParent)`、`store.parents == <String?>[kDefaultProjectParent]`、`result?.path == '$kDefaultProjectParent\\新项目'`；该 fake store 只授权 `D:\work`，正是「授权根里没有项目根」的真实场景，构成回归保护 |
 | 版本 | App **0.4.15+42**（`0.4.15-m4.15`）；插件仍 **0.2.21** |
 | 测试结果 | `flutter test test/workspace_m4_test.dart` 14/14；全量 `flutter test test/` **356/356 PASS** |
 | 构建 | release APK **72,589,702 字节**，SHA256 `3AA815BE6D58D4C1AC21C7FFAB8CA8E7A12DC475BE72DBC9B79142B64FD2B023`；aapt2 `versionCode='42' versionName='0.4.15-m4.15'`，minSdk 24 / targetSdk 36 |
 | 发布 | `dist\DeepSeek-Remote-AI-v0.4.15-m4.15.apk`、`dist\DeepSeek-Remote-latest.apk`、根目录 `DeepSeek Remote AI 手机端 v0.4.15-m4.15.apk`（三处同哈希 `3AA815BE6D58D4C1`） |
-| 回读 | `GET /api/v1/app/version` → `{"versionCode":42,"versionName":"0.4.15-m4.15","size":72589702,"sha256":"3aa815be…","publishedAt":"2026-11-16T08:23:39.274Z"}`；`GET /api/v1/health` → `{"status":"ok","version":"0.2.21","agentOnline":true,"apps":2,"publicUrl":"https://<公网隧道>.trycloudflare.com"}` |
+| 回读 | `GET /api/v1/app/version` → `{"versionCode":42,"versionName":"0.4.15-m4.15","size":72589702,"sha256":"3aa815be…","publishedAt":"2026-11-16T08:23:39.274Z"}`；`GET /api/v1/health` → `{"status":"ok","version":"0.2.21","agentOnline":true,"apps":2,"publicUrl":"https://fwd-encoding-packard-hospitals.trycloudflare.com"}` |
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_15_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.15-m4.15，versionCode 42，可覆盖安装）→ 新建对话框应显示「新建项目 / 项目名称」且提示「将建在：D:\Projects\<名字>」→ 建完到电脑 `D:\Projects\<名字>` 确认目录真的在那儿。若仍显示「新建工作区」，说明手机没装上（覆盖安装失败），需先卸载旧版。手机若连不上，先看 `GET /api/v1/pair/info` 的当前公网地址与配对码（快速隧道每次重启都变）。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.15-m4.15，versionCode 42，可覆盖安装）→ 新建对话框应显示「新建项目 / 项目名称」且提示「将建在：<项目根>\<名字>」→ 建完到电脑 `<项目根>\<名字>` 确认目录真的在那儿。若仍显示「新建工作区」，说明手机没装上（覆盖安装失败），需先卸载旧版。手机若连不上，先看 `GET /api/v1/pair/info` 的当前公网地址与配对码（快速隧道每次重启都变）。
 
 ### M4.16 手机看到的必须是对话，而且一进来就是最新（2026-11-17 补充）
 
@@ -926,7 +926,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 结果 |
 | --- | --- |
-| 现象 | 用户 17:27 再贴官方 App 对话截图，配文「对话做成这样」。M4.12 给了 Markdown 排版、M4.16 洗了正文，但页面骨架仍是自己的：助手回复套着浅底卡片 + 左侧 3px 强调竖条、工具记录写「过程 · N 步（点开看）」、顶部是一张 Panel 卡片且副标题直接怼 `D:\Projects\…` 绝对路径 |
+| 现象 | 用户 17:27 再贴官方 App 对话截图，配文「对话做成这样」。M4.12 给了 Markdown 排版、M4.16 洗了正文，但页面骨架仍是自己的：助手回复套着浅底卡片 + 左侧 3px 强调竖条、工具记录写「过程 · N 步（点开看）」、顶部是一张 Panel 卡片且副标题直接怼 `D:\用户\…` 绝对路径 |
 | 手机端 0.4.17+44 | `desktop_session_screen.dart`：`itemBuilder` 去掉助手回复的卡片包装（`return _EventRow(event: event);`）；工具条改 `'${_running ? '进行中' : '已完成'} · ${_toolCallCount} 次工具调用'` + `Icons.autorenew_rounded`/`Icons.check_circle_outline_rounded` + `Icons.expand_more_rounded`，圆角 12；`_LiveHeader` 改 radius 22 胶囊（`palette.card` 底 + `palette.line` 边框），副标题 `'本机 · $folder'`；新增顶层 `desktopFolderName(String cwd)` 取路径最后一段；`liveEmptyHint` 的提示语从「点上面的『过程』」改成「点上面那条看完整记录」 |
 | 测试 | `flutter test test/` **366/366 PASS**（361 + 新增 `app/test/desktop_live_m4_17_test.dart` 5 例）；`desktop_live_m4_14_test.dart` 的空态断言改用「工具调用」 |
 | 构建 | release APK **72,655,418 字节**，SHA256 `5403BC368E0238586D610358A44E949067682D62BDA606FE5A97137E3F6797AC`；aapt2 `versionCode='44' versionName='0.4.17-m4.17'`，minSdk 24 / targetSdk 36 |
@@ -936,7 +936,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_17_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.17-m4.17，versionCode 44；隧道域名已变为 `https://<公网隧道>.trycloudflare.com`，`GET /api/v1/pair/info` 取配对码重新配对）→ 进任意会话确认三处：回复没有边框卡片、工具那行写「已完成 · N 次工具调用」、顶部写「● 本机 · 目录名」。仍与官方有差距的三处（回复底部只有复制、直播页无头像、步骤条点开是半屏面板而非内联展开）记在 M4.17 报告的「限制与下一步候选」。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.17-m4.17，versionCode 44；隧道域名已变为 `https://salad-contains-hardcover-shops.trycloudflare.com`，`GET /api/v1/pair/info` 取配对码重新配对）→ 进任意会话确认三处：回复没有边框卡片、工具那行写「已完成 · N 次工具调用」、顶部写「● 本机 · 目录名」。仍与官方有差距的三处（回复底部只有复制、直播页无头像、步骤条点开是半屏面板而非内联展开）记在 M4.17 报告的「限制与下一步候选」。
 
 ### M4.18 插件市场与电脑端同步（2026-11-17 补充）
 
@@ -955,7 +955,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_18_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.18-m4.18，versionCode 45，可覆盖安装；隧道域名又变了，现为 `https://<公网隧道>.trycloudflare.com`，先在电脑端重新扫码配对）→ 打开「插件 → 插件市场」，应直接列出电脑上的 42 个插件包（带「官方」标记与已安装状态），搜索是本地过滤，装完回来能看到「已安装 + 卸载」。目录里的中文标题依赖 Host 返回 `meta`，这台电脑目前没有，所以标题显示为包名——等 Host 补上本地化文案会自动生效。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.18-m4.18，versionCode 45，可覆盖安装；隧道域名又变了，现为 `https://latinas-races-supplemental-besides.trycloudflare.com`，先在电脑端重新扫码配对）→ 打开「插件 → 插件市场」，应直接列出电脑上的 42 个插件包（带「官方」标记与已安装状态），搜索是本地过滤，装完回来能看到「已安装 + 卸载」。目录里的中文标题依赖 Host 返回 `meta`，这台电脑目前没有，所以标题显示为包名——等 Host 补上本地化文案会自动生效。
 
 ### M4.19 存档会话也能继续聊（2026-11-17 补充）
 
@@ -976,7 +976,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_19_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.19-m4.19，versionCode 46，可覆盖安装；隧道域名又变了，现为 `https://<公网隧道>.trycloudflare.com`，先在电脑端重新扫码配对）→ 打开一个「已存档」的会话，底部应有输入条，发一句话后应跳到一条新会话并看到回复。注意它不会续写原来那条会话：电脑上会**新开一条**（标题沿用原名、目录不变），最近 12 条对话会作为摘要一起带过去。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.19-m4.19，versionCode 46，可覆盖安装；隧道域名又变了，现为 `https://spirits-duties-mobility-drugs.trycloudflare.com`，先在电脑端重新扫码配对）→ 打开一个「已存档」的会话，底部应有输入条，发一句话后应跳到一条新会话并看到回复。注意它不会续写原来那条会话：电脑上会**新开一条**（标题沿用原名、目录不变），最近 12 条对话会作为摘要一起带过去。
 
 ### M4.20 每次开机后手机「工作区」又空了（2026-11-17 补充）
 
@@ -999,7 +999,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_20_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机先装 `dist\DeepSeek-Remote-latest.apk`（0.4.19-m4.19，versionCode 46；截图里的旧版卡片形态就是 ≤0.4.12 的证据），再用新配对码重新配对（隧道现为 `https://<公网隧道>.trycloudflare.com`）→ 工作区应一次列出 10 个项目、每个都能展开。往后每次重启 DSH，Agent 会在 20 秒内自动把目录校正回来，不需要手动重开。
+> **下一步**：手机先装 `dist\DeepSeek-Remote-latest.apk`（0.4.19-m4.19，versionCode 46；截图里的旧版卡片形态就是 ≤0.4.12 的证据），再用新配对码重新配对（隧道现为 `https://futures-himself-scuba-alpha.trycloudflare.com`）→ 工作区应一次列出 10 个项目、每个都能展开。往后每次重启 DSH，Agent 会在 20 秒内自动把目录校正回来，不需要手动重开。
 
 ### M4.21 手机端也要有「N 条排队消息」（2026-11-17 补充）
 
@@ -1019,7 +1019,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_21_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.21-m4.21，versionCode 47；隧道现为 `https://<公网隧道>.trycloudflare.com`，需重新扫码配对）→ 在一条正在跑的会话里，底部应出现「N 条排队消息」，展开能改字 / 删除 / 单条插话 / 全部插话。用户排在这里的另外三条诉求还没做：**搜索框输入时没有提示**、**审核（授权）操作手机上仍然不出现**、**存档会话不要新开一条、要在同一条对话里继续**。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.21-m4.21，versionCode 47；隧道现为 `https://engagement-saints-burke-cape.trycloudflare.com`，需重新扫码配对）→ 在一条正在跑的会话里，底部应出现「N 条排队消息」，展开能改字 / 删除 / 单条插话 / 全部插话。用户排在这里的另外三条诉求还没做：**搜索框输入时没有提示**、**审核（授权）操作手机上仍然不出现**、**存档会话不要新开一条、要在同一条对话里继续**。
 ### M4.22 输入框里打出来的字不见了（2026-11-17 补充）
 
 | 项 | 结果 |
@@ -1036,13 +1036,13 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 真机 | **未复测**（无 adb 设备） |
 | 文档 | `docs/research/M4_22_REPORT.md`、本文件、根 `README.md`、`docs/mobile/README.md` |
 
-> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.22-m4.22，versionCode 48；隧道现为 `https://<公网隧道>.trycloudflare.com`，需重新扫码配对）→ 插件 → 插件市场 → 搜索框打字应能看到字与提示语。用户排队里还剩两条没做：**审核（授权）操作手机上仍然不出现**、**存档会话不要新开一条、要在同一条对话里继续**。
+> **下一步**：手机装 `dist\DeepSeek-Remote-latest.apk`（0.4.22-m4.22，versionCode 48；隧道现为 `https://engagement-saints-burke-cape.trycloudflare.com`，需重新扫码配对）→ 插件 → 插件市场 → 搜索框打字应能看到字与提示语。用户排队里还剩两条没做：**审核（授权）操作手机上仍然不出现**、**存档会话不要新开一条、要在同一条对话里继续**。
 
 ### M4.23 电脑端「确认需求」的提问卡，手机上也能回答（2026-11-17 补充）
 
 | 项 | 结果 |
 | --- | --- |
-| 用户反馈 | 「这个需要审核操作的手机上还是没有」，附电脑端截图：会话「示例项目E」弹「歌词样式 / 歌词字幕想要什么形式？」三个选项 + 输入框 + 跳过/提交 + 右上「2/2」 |
+| 用户反馈 | 「这个需要审核操作的手机上还是没有」，附电脑端截图：会话「视频生成」弹「歌词样式 / 歌词字幕想要什么形式？」三个选项 + 输入框 + 跳过/提交 + 右上「2/2」 |
 | 关键澄清 | 那不是权限审批，是 `ask_user_question` 工具弹的**提问卡**：日志里只是普通 `tool/call`（`session-e2e1f57b` seq 880），Host 侧走 `user-questions/request` waterfall，不落日志 |
 | 根因 | 插件只接了 `approval/request`（M4.4 起），提问一律 `next()` 交回桌面弹窗，所以手机上什么都没有 |
 | 插件改动（0.2.26 → 0.2.27） | `ctx.on('user-questions/request')` 接管（仅当手机正在看这个会话）；`pendingQuestions` 挂起 Promise；5 分钟无人应答按「跳过」放行；`listDesktopSessionEvents()` 多回 `questions`；新增 `POST /api/v1/desktop/sessions/<id>/questions/<questionId>` |
@@ -1050,7 +1050,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 验收证据 | 插件 `node --check` 通过、`node --test` **85/85**；`flutter test` **382/382**；线上 `/desktop/sessions/<id>/events` 响应含 `approvals,questions`；`POST …/questions/nope` → 404 `QUESTION_NOT_FOUND`；不带 token → 401；`/api/v1/health` = 0.2.27（热加载生效） |
 | 产物 | `dist\DeepSeek-Remote-AI-v0.4.23-m4.23.apk` / `dist\DeepSeek-Remote-latest.apk` / 根目录同名 APK，**72,836,030 字节**，SHA256 `6D7D19CA…3D0B365D`，versionCode 49 |
 | 限制 | 真机还没跑过一次真实提问（`ask_user_question` 要由电脑上的那一轮触发，我这轮无法在不挂住自己的前提下触发），卡片渲染由 widget 测试覆盖 |
-| 下一步 | 装 0.4.23 APK + 重新配对（隧道现为 `https://<公网隧道>.trycloudflare.com`）→ 电脑端弹「确认需求」时应出现在手机上；还剩「存档会话要在同一条对话里继续」 |
+| 下一步 | 装 0.4.23 APK + 重新配对（隧道现为 `https://ide-rpm-filename-henderson.trycloudflare.com`）→ 电脑端弹「确认需求」时应出现在手机上；还剩「存档会话要在同一条对话里继续」 |
 
 ### M4.24 存档会话在原对话里继续（2026-11-17 补充）
 
@@ -1063,7 +1063,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 验收证据 | 插件 `node --check` 通过、`node --test` **85/85**（`session-resume.test.js` 重写为 9 例）；`flutter test` **382/382**（`archive_chat_m4_19_test.dart` → `archive_chat_m4_24_test.dart`）；`/api/v1/health` = 0.2.28（热加载）；`POST /api/v1/desktop/sessions/960545fb…/prompt` → `200 {"resumed":true,"sessionId":"960545fb…"}`；该会话日志 seq 76 user → seq 84 assistant「收到」→ seq 86 `turn/end {kind:"completed"}`，**没有新 sessionId**；`/desktop/tasks` 里出现「课程设计 · 14:14 · completed · msgs=17」 |
 | 产物 | `dist\DeepSeek-Remote-AI-v0.4.24-m4.24.apk` / `dist\DeepSeek-Remote-latest.apk` / 根目录同名 APK，**72,836,030 字节**，SHA256 `74412D78…95EA7877`，versionCode 50 |
 | 限制 | 手机存档列表里那条记录仍在（被「电脑列表里也在」去重挡住）；会话恢复后回到电脑会话列表，长期会攒回来；真机未复测完整流程 |
-| 下一步 | 装 0.4.24 APK + 重新配对（隧道现为 `https://<公网隧道>.trycloudflare.com`）→ 点一条「已存档」会话发话，应就地看到回复、电脑上不多出新会话 |
+| 下一步 | 装 0.4.24 APK + 重新配对（隧道现为 `https://independent-particularly-concert-okay.trycloudflare.com`）→ 点一条「已存档」会话发话，应就地看到回复、电脑上不多出新会话 |
 
 ### M4.25 账户余额放到「我的」里面（2026-11-17 补充）
 
@@ -1344,7 +1344,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 内容 |
 |---|---|
-| 问题 | 手机端工作区主 Tab 有内容，点右上角文件夹进二级页却是「电脑端还没有配置工作区（M1_WORKSPACE_ROOT）」。现场 `agentOnline:false`、没有 `serve.ts` 进程；手动跑入口报 `未找到 DeepSeek Harness 安装（可通过 DSH_INSTALL_ROOT 指定）`。根因：agent 只找 PATH 的 `dsh.cmd` / `%LOCALAPPDATA%` 默认安装位，而 DSH 是便携版装在 `<DSH 安装目录>` |
+| 问题 | 手机端工作区主 Tab 有内容，点右上角文件夹进二级页却是「电脑端还没有配置工作区（M1_WORKSPACE_ROOT）」。现场 `agentOnline:false`、没有 `serve.ts` 进程；手动跑入口报 `未找到 DeepSeek Harness 安装（可通过 DSH_INSTALL_ROOT 指定）`。根因：agent 只找 PATH 的 `dsh.cmd` / `%LOCALAPPDATA%` 默认安装位，而 DSH 是便携版装在 `<DSH 安装目录>\new` |
 | 改动 | 新增 `dsh-plugin-m1/lib/dsh-install.js` `resolveDshInstallRoot()`（显式 env → `dirname(process.execPath)`，要求 `resources/app.asar` 在）；`supervisor.js` 加 `dshInstallRoot` 参数并注入 `DSH_INSTALL_ROOT`、首次启动多打一行安装目录；`index.js` apply 时传解析结果；`agent/src/harness/acp/launcher.ts`（插件副本 + 项目根 `agent/` 同步）新增 `installRootFromParentExe()`（Windows 问父进程 exe，是 `DeepSeek Harness.exe` 就取 dirname），排在抛错之前兜底；插件版本 0.2.33 → **0.2.34** |
 | 验收 | 插件测试 **157/157**（原 146 + 新增 `test/dsh-install-root.test.js` 7 例、`test/agent-parent-discover.test.js` 4 例）；反证：把 `resolveDshInstallRoot()` 在显式 env 后立刻 `return ''` → 便携版推导用例失败；现场证据：修复后 supervisor 下一次重试成功（`serve.ts` pid 33512、父进程 `DeepSeek Harness.exe` pid 24532），`/api/v1/health` `agentOnline:true`，agent 刷出 11 个工作区根 |
 | 踩坑 | `HARNESS_NOT_INSTALLED` 在文件顶部注释里也出现，`indexOf` 拿到的是注释 → 测试改成匹配 `throw new HarnessError('HARNESS_NOT_INSTALLED'`；插件版本在 health 里要重载插件才更新 |
@@ -1355,9 +1355,9 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 内容 |
 |---|---|
-| 问题 | 工作区详情页点「在这里新建会话」只弹一句「已请电脑在「示例项目C」里新建会话」，页面照旧空态、输入框照旧灰着；电脑端会话列表也没有。磁盘上其实建出来了：`…\sessions\--D-~4E07…--\97e99c63-…\session.v4.jsonl.zstd`（22:29:11，header `cwd=D:\Projects\示例项目C`）。根因是**两条进程两套会话表**：手机发 `conversation.create`，会话由电脑端 Agent 的 ACP 子进程在磁盘上建；而手机工作区列表与电脑端列表都读电脑端主进程内存里的 `sessions`（`lib/index.js:1516 listDesktopTasks()` → `ctx.get('sessions').list()`，DSH 的 `sessions` 服务自述 "In-memory session store… Persistence is intentionally not implemented here"） |
+| 问题 | 工作区详情页点「在这里新建会话」只弹一句「已请电脑在「人生记录系统」里新建会话」，页面照旧空态、输入框照旧灰着；电脑端会话列表也没有。磁盘上其实建出来了：`…\sessions\--D-~4E07…--\97e99c63-…\session.v4.jsonl.zstd`（22:29:11，header `cwd=<项目根>\人生记录系统`）。根因是**两条进程两套会话表**：手机发 `conversation.create`，会话由电脑端 Agent 的 ACP 子进程在磁盘上建；而手机工作区列表与电脑端列表都读电脑端主进程内存里的 `sessions`（`lib/index.js:1516 listDesktopTasks()` → `ctx.get('sessions').list()`，DSH 的 `sessions` 服务自述 "In-memory session store… Persistence is intentionally not implemented here"） |
 | 改动 | 不再建空会话。新增 `app/lib/services/remote_chat_intent.dart`（`RemoteChatRequest` + `RemoteChatIntent` 单例，open/pending/take）；`LiveStore.startNewConversation()` 绑目录并清空旧会话状态（`_conversationId`/`_messages`/`_taskState`…），下一次 `sendPrompt` 才真正 `createConversation()`；`workspace_screen.dart` 三个「发完即忘」的方法（`_bindAndHint`/`_createSession`/`_renameSession`）合并成 `_startNewChat()` = 绑目录 + 广播意图 + pop；AppBar / 空态按钮 / 文字链 / FAB / 输入条 `onTap` 全指向它；空态文案改「点下面的按钮去 AI 助手的「远程电脑」里发第一条消息」，输入条由 `enabled: hasTask` 改 `readOnly: !hasTask`；`tasks_screen.dart` + `root_shell.dart` 透传 `onOpenAssistant`（切回 AI 助手 Tab）；`assistant_screen.dart` 监听意图 → 切「远程电脑」档 + `startNewConversation()` + 聚焦输入框（`live.isBusy` 时只记目录 + 提示），新增 `modeForTest` 便于测试 |
-| 验收 | 新增 `app/test/new_chat_m4_50_test.dart` **3/3**（切档 + 目录交给新会话 / 忙时不打断只记目录 / 意图只消费一次）；改 `workspace_m4_test.dart`、`tasks_m4_11_test.dart` 两例旧断言；反证：注释掉 `RemoteChatIntent.instance.open(...)` → 这两例失败（`Expected: 'D:\\Projects\\示例项目B'`、`Expected: 'D:\\work\\demo'`），恢复后 23/23；全量 **516/516**；`flutter analyze` 32 条、0 error |
+| 验收 | 新增 `app/test/new_chat_m4_50_test.dart` **3/3**（切档 + 目录交给新会话 / 忙时不打断只记目录 / 意图只消费一次）；改 `workspace_m4_test.dart`、`tasks_m4_11_test.dart` 两例旧断言；反证：注释掉 `RemoteChatIntent.instance.open(...)` → 这两例失败（`Expected: 'D:\\用户\\项目\\桌面萌宠'`、`Expected: 'D:\\work\\demo'`），恢复后 23/23；全量 **516/516**；`flutter analyze` 32 条、0 error |
 | 踩坑 | 改 `enabled` 为 `readOnly` 后旧测试 `field.enabled` 断言失效，改断 `readOnly`；`tasks_m4_11` 的 fake store 需要补 `pendingWorkspaceCalls` + `setPendingWorkspace` 覆写 |
 | 交付 | App **0.4.50+75**；APK **73,213,886 字节** / SHA256 `17668D5BED32266A61E2A3B10AD8573BA9FBB4D55B5DFA00ECA4C3D447985EA0`；debug 签名可覆盖升级；构建产物 + `dist/DeepSeek-Remote-AI-v0.4.50-m4.50.apk` + `dist/DeepSeek-Remote-latest.apk` + 根目录同名 APK 四处同哈希；`verify-release.mjs` 四项一致；`/api/v1/app/version` 回读 code 75 / `0.4.50-m4.50` / size 与 sha 一致 |
 | 未做 | 电脑端仍看不到手机新建的会话（两条进程各一套会话表）。要彻底修需把 Agent 建的会话登记进电脑端（会与 ACP 子进程抢同一个会话文件），方案未定；工作区二级页的「已连接但 Agent 掉线」文案也仍未改 |
@@ -1378,7 +1378,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 内容 |
 |---|---|
-| 问题 | 用户截图：工作区里打开 `示例文档.docx`，页面只有「用其他应用打开」兜底面板；点按钮后提示「手机上没有能打开这种文件的应用」。这台手机没装 WPS，于是 `.docx` 在 App 里彻底读不到——App 不预览、外部也没人接。旧实现把 `doc/docx/xls/xlsx/ppt/pptx/csv/tsv` 一律当二进制（`previewKindOf()` → `FilePreviewKind.office`），且有 `FileOpener` 把所有 `PlatformException` 吞成 `false`，`NO_APP` 和 `OPEN_FAILED` 在 UI 上是同一句话 |
+| 问题 | 用户截图：工作区里打开 `答辩问答准备.docx`，页面只有「用其他应用打开」兜底面板；点按钮后提示「手机上没有能打开这种文件的应用」。这台手机没装 WPS，于是 `.docx` 在 App 里彻底读不到——App 不预览、外部也没人接。旧实现把 `doc/docx/xls/xlsx/ppt/pptx/csv/tsv` 一律当二进制（`previewKindOf()` → `FilePreviewKind.office`），且有 `FileOpener` 把所有 `PlatformException` 吞成 `false`，`NO_APP` 和 `OPEN_FAILED` 在 UI 上是同一句话 |
 | 改动 | 新增 `app/lib/services/office_text.dart`（纯 Dart 最小 zip 读取 + docx 正文抽取：EOCD/中央目录/本地头，`stored` 直取、`deflate` 走 `ZLibDecoder(raw: true)`，`docxXmlToText()` 把 `<w:tab/>`、`<w:br/>`、`</w:p>`、`</w:tc>` 等转成制表/换行并还原实体，`isDocxFileName()` 只认 `.docx`，zip64 返回 null）；`file_viewer_screen.dart` 增 `_officePreview` + `_maxDocxBytes = 12MB`，`_loadBytes()` 抽正文，`_buildBinaryBody()` 命中时显示「按文字预览（排版和图片不显示）」+ `SelectableText` + 新 `_OfficePreviewFooter`（右侧仍可「用其他应用打开」），抽取失败时文案改成「这份 .docx 里没读出文字（可能加密或不是标准格式），交给手机上的 WPS 打开试试。」 |
 | 验收 | 新增 `app/test/office_text_m4_52_test.dart` **8/8**（stored/deflate zip、缺条目/坏 zip、XML→文字含制表换行实体、超长截断、`isDocxFileName` 边界、文件页显示正文且仍能调外部应用、坏 docx 提示没读出文字）；反证：`final officePreview = false && …` → 文件页那例失败（`+6 -1`），恢复后 8/8；全量 `flutter test` **527/527**；`flutter analyze --no-pub` 32 条、0 error |
 | 踩坑 | pwsh 命令行里带中文字面量做 `.Replace` 会把「手」写成「机」，污染了 `empty_state_test.dart` / `widget_test.dart`（出现「AI 助机」「机机端」），首跑全量挂 1 例——改用 edit 工具逐处修回，并定下规矩：**中文改动只用 edit/write 工具，不放进 pwsh 命令** |
@@ -1514,7 +1514,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 需求 | 用户要求「以后更新附上更新说明」，并希望做好的文件走「接收文件」发到手机 |
 | 改动 | 新增 `docs/UPDATE_NOTES.md`（每次发版在顶部加一段 `## <版本号> — <标题>`）；`lib/appupdate.js` 新增 `readReleaseNotes()`：`notes` 未显式配置时按版本名前两段匹配该文件、截 1500 字，带进 `/api/v1/app/version` 的 `notes` 字段（App 的更新弹窗本来就展示 `info.notes`）；缓存键加上 `notes.length` 以免改了说明不刷新 |
 | 验收 | 新增 `test/appupdate-notes.test.js` 3 例（按版本段抽取且不串段、无对应版本时为空、显式配置优先）；插件全量 **185/185**；热载 0.2.68 后 `/api/v1/app/version` 返回 `notesLen=250`，内容是 0.4.58 那段 |
-| 投递 | `<DSH 数据目录>\dsh-plugin-m1\received\` 已放入 `DeepSeek-Remote-AI-v0.4.58-m4.58.apk`、`更新说明-0.4.58-m4.58.md`、`M4.63-启动自愈-报告.md`；`GET /api/v1/received` 四项、下载 200 |
+| 投递 | `<DSH 安装目录>\.dsh\dsh-plugin-m1\received\` 已放入 `DeepSeek-Remote-AI-v0.4.58-m4.58.apk`、`更新说明-0.4.58-m4.58.md`、`M4.63-启动自愈-报告.md`；`GET /api/v1/received` 四项、下载 200 |
 
 ### M4.64 文件分享（App 0.4.59+80）
 
@@ -1561,7 +1561,7 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 
 | 项 | 内容 |
 | --- | --- |
-| 问题 | 用户发来「示例作业.docx」（5.39 MB）说「还是不让我打开」：文件页只显示「这份 .docx 里没读出文字」，而这台手机又没装能打开 .docx 的应用 |
+| 问题 | 用户发来「习题一.docx」（5.39 MB）说「还是不让我打开」：文件页只显示「这份 .docx 里没读出文字」，而这台手机又没装能打开 .docx 的应用 |
 | 根因 | 那份文档 `word/document.xml` 里 `<w:t>` 计数为 0（纯图片），文字抽取必然为空；它实际是 `word/media/image1..4.jpeg` 四张扫描照片（最大一张 5.2 MB）。文件页当时没有别的显示方式 |
 | 改动 | `office_text.dart` 抽出 `_listEntries()` 复用中央目录解析，新增 `docxImagePages()`（只取 `word/media/` 图片、按文件名数字排序、上限 24 张 / 40 MB）；`file_viewer_screen.dart` 在 docx 无文字时渲染竖排图片预览，底栏说明改成「这份文档没有可选文字（多半是扫描件）」 |
 | 验收 | 新增 `docx_pages_m4_69_test.dart` 5 例（有文字不误判 / 取图片 / 数字顺序 / 张数上限 / 文件页渲染）；全量 **550/550**、analyze **33 issues、0 error**；反证（去掉 `word/media/` 前缀判断）失败后恢复；真文件探针 `pages=4`、尺寸与 media 一一对应 |
@@ -1608,3 +1608,13 @@ cd app; dart run tool\live_update_check.dart http://127.0.0.1:8787 <当前 versi
 | 改动 | `FileOpenBridge.handleOpenBytes` 改成 `Intent.createChooser(view, "用其他应用打开")`，每次都列候选应用 |
 | 验收 | 版本断言测试通过；`flutter build apk --release` 成功；`aapt2 dump badging` → versionCode 88 / `0.4.67-m4.67`；`verify-release.mjs` 四项一致 |
 | 交付 | APK **74,217,829 字节**，SHA256 `EBE3A3BBCF275265ED584DA752E37D823204D9484C7567B2197ADEF3246B212D`；四处同哈希；`UPDATE_NOTES.md` / `app/assets/update_notes.md` 加 0.4.67 段；`received/` 投递 |
+
+### M4.74 Tailscale 作为一等连接方式（插件 0.2.70）
+
+| 项 | 内容 |
+| --- | --- |
+| 问题 | 用户问「你怎么没有写用 tailscale 实现的」：插件其实早就把 `100.64/10` 排在地址列表第一位，但配网页和文档只写「局域网 / 公网隧道」，Tailscale 既没标签也没说明，等于隐身 |
+| 改动 | `server.js` 新增 `classifyAddress(address, name)` → `tailscale` / `lan` / `virtual`，`lanAddresses()` 用它并给每项加 `kind`；`GET /api/v1/pair/info` 新增 `tailscaleUrls`；配网页副标题改成三种连法、首张卡标签改「局域网 / Tailscale（同一网络）」、单独列出「Tailscale（同一 Tailnet，跨网络可用）」一行、页脚改「局域网 · Tailscale · 公网隧道，任选其一」；App 连接页副标题与 helper 文案同步（`局域网 · Tailscale · 公网隧道`） |
+| 验收 | `test/lan-address-kind.test.js` 5 例（100.64/10 判定与边界 100.128 / 100.63、局域网与虚拟网卡区分、`lanAddresses` 带 `kind` 且 Tailscale 排第一、配对接口与配网页都含 Tailscale）；插件全量 **195/195**；热载 0.2.70 后 `/api/v1/health` = `version 0.2.70 / agentOnline true`，`/api/v1/pair/info` 的 `tailscaleUrls` = `["http://100.101.102.103:8787"]` |
+| 交付 | 插件 0.2.70 已热载；GitHub README 新增「三种连法：局域网 / Tailscale / 公网隧道」一节（含 Tailscale 四步做法）；插件 README 手机连接段补 Tailscale |
+| 未做 | 手机端还没有「一键切换 Tailscale 地址」的界面（现在靠扫描/手填）；App 未重新发版（本版只改插件与文档） |
