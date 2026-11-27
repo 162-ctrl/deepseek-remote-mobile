@@ -19,9 +19,15 @@ Spring Boot 后端、也不用手工拉起 agent 进程**；公网隧道由插�
 ## 安装
 
 ```powershell
-# 在 Harness 会话里（或命令行）
+# 1) 装可选依赖（pdf / docx 在工作区里预览时才用到）
+cd <项目根>\dsh-plugin-m1
+npm install
+
+# 2) 在 Harness 会话里（或命令行）安装插件
 dsh plugin install <项目根>\dsh-plugin-m1
 ```
+
+运行要求：**Node 24+**（内置 agent 的 `serve.ts` 由 node 直接跑 TS；DSH 自身的 Node 通常已满足）。不装 `npm install` 也能连手机，只是电脑上浏览工作区里的 `.pdf` / `.docx` 时预览会降级成二进制兜底。
 
 启用后插件会：
 
@@ -87,7 +93,7 @@ GET /api/v1/app/apk       → 直接下载（支持 HEAD、Range 无需）
 | 手机那一端 | 浏览器打开桌面 UI | 你自己的 Flutter App（M1 协议） |
 | 会话 | 与桌面实时同屏 | 独立的 ACP 会话（与后端模式一致） |
 | 扫码 | 扫 URL，再输访问密码 | 扫 `地址#c=码`，App 自动填满 |
-| 依赖 | qrcode / cloudflared | 零运行时依赖（cloudflared 可选），agent 代码内置 |
+| 依赖 | qrcode / cloudflared | `jszip`、`pdf-parse`（只给 pdf/docx 预览用，`npm install` 装），cloudflared 可选，agent 代码内置 |
 
 两者可以同时启用，互不冲突。
 
