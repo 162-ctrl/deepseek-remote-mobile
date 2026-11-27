@@ -37,11 +37,13 @@ flutter build apk --release  # 产物在 build/app/outputs/flutter-apk/
 # 电脑端 Agent
 cd agent && npm ci && npm test
 
-# DSH 插件
-cd dsh-plugin-m1 && npm ci && node --test 'test\*.test.js'
+# DSH 插件（先装依赖，再装插件）
+cd dsh-plugin-m1 && npm install && node --test 'test\*.test.js'
 ```
 
-Flutter 3.x（Dart 3.5+）、Node 20+、JDK 21、Android SDK 35+。构建时把 `JAVA_HOME`、`ANDROID_HOME` 指好即可；项目里不含任何签名密钥（`key.properties` 用 debug 签名占位）。
+Flutter 3.x（Dart 3.5+）、Node 24+（插件内置的 agent 直接跑 TS）、JDK 21、Android SDK 35+。构建时把 `JAVA_HOME`、`ANDROID_HOME` 指好即可；项目里不含任何签名密钥（`key.properties` 用 debug 签名占位）。
+
+装插件：先 `cd dsh-plugin-m1 && npm install`（`jszip`、`pdf-parse` 只用于 pdf/docx 预览），再执行 `dsh plugin install <项目根>\dsh-plugin-m1`，重启会话后插件会在 `127.0.0.1:8787` 起服务。
 
 ## 它是怎么工作的
 
